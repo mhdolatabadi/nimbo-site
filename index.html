@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nimbo · فاز صفر — پیش از پرتاب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@200;300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --void:#1a0a2e;--void-2:#22103b;--panel:#2c1350;--panel-2:#37196a;
+    --purple:#641c8c;--purple-glow:#8a34c0;--gold:#f5a623;--gold-lit:#ffc24b;
+    --ink:#f4ecfb;--lav:#b69ad6;--lav-dim:#7a5f97;--ring:#ffffff;
+    --line:rgba(182,154,214,.16);--line-strong:rgba(182,154,214,.32);--ok:#7ce0a3;
+    --shadow:0 24px 60px -20px rgba(0,0,0,.7);--fs-display:clamp(3.4rem,11vw,8rem);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--void);color:var(--ink);font-family:"Vazirmatn",system-ui,sans-serif;line-height:1.85;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  /* تمام متن‌های رابط، فارسی و لاتین، با Vazirmatn نمایش داده می‌شوند. */
+  .mono{font-family:"Vazirmatn",system-ui,sans-serif}
+  .tnum{font-variant-numeric:tabular-nums;letter-spacing:.5px}
+  body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(120% 90% at 50% -10%, #3a1663 0%, var(--void) 55%),radial-gradient(80% 60% at 85% 10%, rgba(245,166,35,.10), transparent 60%)}
+  body::after{content:"";position:fixed;inset:0;z-index:-1;opacity:.35;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);background-size:34px 34px;mask-image:radial-gradient(120% 80% at 50% 0%, #000 30%, transparent 75%)}
+  a{color:inherit}
+  ::selection{background:var(--gold);color:var(--void)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  section.block{padding:64px 0;position:relative;scroll-margin-top:80px}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:36px;flex-wrap:wrap}
+  .sec-kicker{font-family:"Vazirmatn",system-ui,sans-serif;font-size:.75rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+  h2.sec-title{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;letter-spacing:-1px}
+  .sec-note{color:var(--lav);max-width:620px;font-size:1rem}
+
+  /* top bar + nav */
+  .topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:linear-gradient(180deg, rgba(26,10,46,.92), rgba(26,10,46,.6));border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:18px;height:66px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;flex:0 0 auto}
+  .brand .lockup{font-size:1.15rem;letter-spacing:.5px;color:var(--gold)}
+  .brand .sub{font-size:.72rem;color:var(--lav);font-weight:400}
+  .nimbo-ring{width:34px;height:34px;flex:0 0 auto}
+  nav.mainnav{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none}
+  nav.mainnav::-webkit-scrollbar{display:none}
+  nav.mainnav a{white-space:nowrap;font-size:.9rem;color:var(--lav);text-decoration:none;padding:8px 12px;border-radius:9px;transition:.18s}
+  nav.mainnav a:hover{color:var(--ink);background:rgba(182,154,214,.08)}
+  nav.mainnav a.active{color:var(--ink);background:rgba(245,166,35,.14)}
+  /* hero */
+  .hero{position:relative;padding:104px 0 68px;overflow:hidden}
+  .hero .bigring{position:absolute;top:50%;left:50%;translate:-50% -50%;width:min(760px,120vw);height:min(760px,120vw);z-index:0;opacity:.5;animation:spin 90s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .hero .inner{position:relative;z-index:1}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.86rem;letter-spacing:1px;color:var(--gold);border:1px solid var(--line-strong);border-radius:999px;padding:7px 16px;margin-bottom:26px}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .phase-num{font-family:"Vazirmatn",system-ui,sans-serif;color:var(--lav);font-size:.95rem;letter-spacing:3px;margin-bottom:6px}
+  h1.display{font-size:var(--fs-display);font-weight:900;line-height:.92;letter-spacing:-2px;color:var(--ink);text-shadow:0 0 60px rgba(138,52,192,.5)}
+  h1.display b{color:var(--gold)}
+  .tagline{font-size:clamp(1.1rem,2.6vw,1.55rem);color:var(--lav);font-weight:400;margin-top:18px;max-width:640px}
+  .launch-status{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;margin-top:40px;padding:22px 26px;background:linear-gradient(120deg, var(--panel), rgba(44,19,80,.4));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);max-width:640px}
+  .ls-block{display:flex;flex-direction:column;gap:2px}
+  .ls-label{font-size:.74rem;letter-spacing:.5px;color:var(--lav-dim)}
+  .ls-value{font-size:1.5rem;color:var(--ink)}
+  .ls-value.gold{color:var(--gold)}
+  .ls-sep{width:1px;align-self:stretch;background:var(--line)}
+  .dare{margin-top:34px;font-family:"Vazirmatn",system-ui,sans-serif;letter-spacing:5px;font-size:.78rem;color:var(--lav-dim)}
+  .dare b{color:var(--purple-glow)}
+
+  /* briefing */
+  .brief-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .brief-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px;position:relative;overflow:hidden}
+  .brief-card::before{content:"";position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(var(--gold),transparent)}
+  .brief-card h3{font-size:1.15rem;font-weight:700;margin-bottom:12px;color:var(--ink);display:flex;align-items:center;gap:10px}
+  .brief-card h3 .num{font-family:"Vazirmatn",system-ui,sans-serif;color:var(--gold);font-size:.9rem}
+  .brief-card p{color:var(--lav);font-size:.96rem}
+  .brief-card .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .chip{font-size:.78rem;color:var(--lav);background:rgba(182,154,214,.08);border:1px solid var(--line-strong);border-radius:6px;padding:3px 9px}
+  .chip.tool{font-family:"Vazirmatn",system-ui,sans-serif;color:var(--gold-lit);background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.25)}
+  .pipeline{margin-top:22px;font-family:"Vazirmatn",system-ui,sans-serif;font-size:.82rem;color:var(--lav);background:var(--void-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;direction:ltr;text-align:center;overflow-x:auto}
+  .pipeline b{color:var(--gold)}
+
+  /* timeline */
+  .timeline{position:relative}
+  .rail{position:absolute;right:31px;top:16px;bottom:16px;width:2px;background:var(--line);z-index:0}
+  .rail-fill{position:absolute;right:31px;top:16px;width:2px;background:linear-gradient(var(--gold),var(--purple-glow));z-index:0;transition:height .6s ease;box-shadow:0 0 14px rgba(245,166,35,.5)}
+  .mission{position:relative;padding-right:80px;margin-bottom:20px;z-index:1}
+  .node{position:absolute;right:8px;top:6px;width:48px;height:48px;z-index:2;display:grid;place-items:center}
+  .node svg{position:absolute;inset:0}
+  .node .glyph{position:relative;font-weight:700;font-size:1rem}
+  .m-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:border-color .25s, transform .25s, box-shadow .25s}
+  .m-head{display:flex;align-items:center;gap:14px;padding:20px 22px;cursor:default;width:100%;text-align:right;background:none;border:none;color:inherit;font-family:inherit}
+  .m-head .daytag{font-size:.74rem;color:var(--lav-dim);white-space:nowrap}
+  .m-titles{flex:1;min-width:0}
+  .m-title{font-size:1.2rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .m-tool{font-family:"Vazirmatn",system-ui,sans-serif;font-size:.72rem;color:var(--gold-lit);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.22);border-radius:6px;padding:2px 8px}
+  .m-time{font-size:.74rem;color:var(--lav);background:rgba(182,154,214,.1);border:1px solid var(--line-strong);border-radius:6px;padding:2px 9px;white-space:nowrap}
+  .m-tag{color:var(--lav);font-size:.9rem;margin-top:3px}
+  .m-state{font-size:.76rem;white-space:nowrap;display:flex;align-items:center;gap:7px}
+  .chev{width:20px;height:20px;transition:transform .3s;color:var(--lav)}
+  .mission.locked .m-card{background:rgba(44,19,80,.4);border-style:dashed}
+  .mission.locked .m-title,.mission.locked .m-tag{color:var(--lav-dim)}
+  .mission.locked .m-tool,.mission.locked .m-time{opacity:.5}
+  .mission.locked .m-state{color:var(--lav-dim)}
+  .mission.locked .chev{display:none}
+  .mission.open .m-card:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+  .mission.open .m-head{cursor:pointer}
+  .mission.open .m-state{color:var(--ok)}
+  .mission.expanded .chev{transform:rotate(180deg)}
+  .mission.expanded .m-card{border-color:rgba(245,166,35,.4);box-shadow:0 0 0 1px rgba(245,166,35,.15),var(--shadow)}
+  .mission.active .m-card{border-color:rgba(245,166,35,.35)}
+  .m-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+  .m-body-inner{padding:4px 26px 30px;border-top:1px solid var(--line)}
+  .m-body-inner > *:first-child{margin-top:20px}
+  .m-body p{color:var(--lav);margin:14px 0}
+  .m-body strong{color:var(--ink);font-weight:700}
+  .m-body h4.part{font-size:1.02rem;color:var(--gold-lit);font-weight:700;margin:26px 0 4px;display:flex;align-items:center;gap:9px}
+  .m-body h4.part .pn{font-size:.8rem;border:1px solid rgba(245,166,35,.4);border-radius:6px;padding:1px 9px;color:var(--gold)}
+  .m-body ol,.m-body ul{margin:14px 0;padding-right:22px;color:var(--lav)}
+  .m-body li{margin:8px 0}
+  .m-body li::marker{color:var(--gold)}
+  .callout{display:flex;gap:12px;background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.22);border-radius:12px;padding:14px 16px;margin:18px 0;color:var(--ink);font-size:.94rem}
+  .callout.warn{background:rgba(255,107,138,.08);border-color:rgba(255,107,138,.28)}
+  .callout .ic{color:var(--gold);flex:0 0 auto}
+  .callout.warn .ic{color:#ff8aa2}
+  code.inline{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85em;background:var(--void-2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--gold-lit);direction:ltr;display:inline-block}
+  .term{background:var(--void-2);border:1px solid var(--line);border-radius:12px;margin:18px 0;overflow:hidden}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:9px 14px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.2)}
+  .term-bar .d{width:11px;height:11px;border-radius:50%}
+  .term-bar .d1{background:#ff6b8a}.term-bar .d2{background:var(--gold)}.term-bar .d3{background:var(--ok)}
+  .term-bar .t{margin-right:8px;font-family:"Vazirmatn",system-ui,sans-serif;font-size:.68rem;color:var(--lav-dim);letter-spacing:1px}
+  .term pre{margin:0;padding:16px 18px;overflow-x:auto;direction:ltr;text-align:left}
+  .term code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.7;color:#e7d9f5;white-space:pre}
+  .term code .p{color:var(--gold)}.term code .c{color:var(--lav-dim)}.term code .k{color:var(--gold-lit)}
+  .check{margin:24px 0 6px;border:1px solid rgba(138,52,192,.42);border-radius:14px;background:linear-gradient(180deg, rgba(100,28,140,.2), transparent);overflow:hidden}
+  .check-h{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid rgba(138,52,192,.32);font-weight:700;color:var(--gold-lit);font-size:.92rem}
+  .check-h .qm{width:24px;height:24px;flex:0 0 auto;display:grid;place-items:center;border:1px solid var(--gold);border-radius:50%;color:var(--gold);font-size:.82rem}
+  .check ul{margin:14px 18px}
+  .check li{color:var(--ink);margin:9px 0;font-size:.94rem}
+  .check li::marker{color:var(--purple-glow)}
+  .res{margin-top:22px}
+  .res-title{font-family:"Vazirmatn",system-ui,sans-serif;font-size:.72rem;letter-spacing:2px;color:var(--lav-dim);text-transform:uppercase;margin-bottom:10px}
+  .res a{display:flex;align-items:center;gap:10px;color:var(--lav);text-decoration:none;padding:9px 0;border-bottom:1px solid var(--line);font-size:.92rem;transition:.2s}
+  .res a:last-child{border-bottom:none}
+  .res a:hover{color:var(--gold-lit)}
+  .res a .arrow{color:var(--gold)}
+  .res a .u{direction:ltr;font-family:"Vazirmatn",system-ui,sans-serif;font-size:.78rem;color:var(--lav-dim);margin-inline-start:auto}
+  .locked-msg{padding:6px 26px 24px;font-size:.84rem;color:var(--lav-dim);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .locked-msg .cd{color:var(--gold)}
+
+  /* 9-week bootcamp roadmap — برای فعال‌سازی، این کامنت را بردارید.
+  .program-intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;margin-bottom:30px}
+  .program-legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .legend-item{font-size:.78rem;color:var(--lav);border:1px solid var(--line-strong);background:rgba(182,154,214,.06);padding:5px 10px;border-radius:999px}
+  .legend-item b{color:var(--gold-lit);font-weight:500}
+  .weeks-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .week-card{position:relative;background:linear-gradient(145deg,var(--panel),rgba(44,19,80,.58));border:1px dashed var(--line-strong);border-radius:20px;padding:22px;overflow:hidden}
+  .week-card::after{content:attr(data-week);position:absolute;left:14px;top:-22px;font-family:"Vazirmatn",system-ui,sans-serif;font-size:5.8rem;font-weight:700;color:rgba(182,154,214,.055);line-height:1;pointer-events:none}
+  .week-head{position:relative;z-index:1;display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
+  .week-num{width:44px;height:44px;display:grid;place-items:center;flex:0 0 auto;border:1px solid rgba(245,166,35,.4);border-radius:13px;color:var(--gold);font-weight:700;background:rgba(245,166,35,.08)}
+  .week-title{font-size:1.05rem;font-weight:700;color:var(--ink)}
+  .week-subtitle{font-size:.82rem;color:var(--lav-dim);margin-top:2px}
+  .release-list{position:relative;z-index:1;display:grid;gap:10px}
+  .release-slot{display:grid;grid-template-columns:105px minmax(0,1fr);gap:12px;align-items:center;padding:12px 14px;border-radius:13px;background:rgba(26,10,46,.42);border:1px solid var(--line)}
+  .release-when{font-size:.73rem;color:var(--lav-dim)}
+  .release-title{font-size:.9rem;color:var(--lav);font-weight:500}
+  .release-title span{display:block;font-size:.75rem;color:var(--lav-dim);font-weight:300;margin-top:1px}
+  .week-card:first-child{border-style:solid;border-color:rgba(245,166,35,.34)}
+  .week-card:first-child .week-subtitle{color:var(--gold-lit)}
+  */
+
+  footer{padding:56px 0 46px;border-top:1px solid var(--line);text-align:center}
+  footer .fbrand{color:var(--gold);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  footer .fdare{font-family:"Vazirmatn",system-ui,sans-serif;letter-spacing:5px;font-size:.75rem;color:var(--lav-dim)}
+  footer .fdare b{color:var(--purple-glow)}
+  footer p{color:var(--lav-dim);font-size:.82rem;margin-top:14px}
+
+  @media (max-width:720px){
+    .brand .sub{display:none}
+    /* .program-intro{grid-template-columns:1fr}
+    .program-legend{justify-content:flex-start}
+    .weeks-grid{grid-template-columns:1fr} */
+  }
+  @media (max-width:640px){
+    .hero{padding:84px 0 54px}
+    .ls-sep{display:none}
+    .mission{padding-right:64px}
+    .rail,.rail-fill{right:23px}
+    .node{width:40px;height:40px;right:4px}
+    .m-head{flex-wrap:wrap}
+    .m-state .lbl{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}.hero .bigring{animation:none}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <svg class="nimbo-ring" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M8 12 A16 16 0 0 1 32 12" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M8 28 A16 16 0 0 0 32 28" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+        <circle cx="20" cy="20" r="4.4" fill="none" stroke="#f5a623" stroke-width="2.4"/>
+      </svg>
+      <div>
+        <div class="lockup">Nimbo</div>
+        <div class="sub">مسیر آموزشی · فاز صفر</div>
+      </div>
+    </div>
+    <nav class="mainnav">
+      <!-- صفحه فعلاً تک‌فایلی است؛ همهٔ لینک‌ها به بخش‌های همین صفحه می‌روند. -->
+      <a href="#top" class="active" aria-current="page">فاز صفر</a>
+      <a href="#briefing">بریفینگ</a>
+      <a href="#timeline">مأموریت‌ها</a>
+      <!-- <a href="#program">برنامه‌ی ۹ هفته</a> -->
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <svg class="bigring" viewBox="0 0 400 400" aria-hidden="true">
+    <path d="M60 120 A160 160 0 0 1 340 120" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M60 280 A160 160 0 0 0 340 280" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(245,166,35,.12)" stroke-width="1" stroke-dasharray="2 10"/>
+  </svg>
+  <div class="wrap inner">
+    <span class="eyebrow"><span class="dot"></span> پیش از پرتاب · <span class="mono">PRE-FLIGHT</span></span>
+    <div class="phase-num mono">PHASE 00 · WARM-UP</div>
+    <h1 class="display">فاز <b>صفر</b></h1>
+    <p class="tagline">قبل از اینکه موتورها روشن شن. یک گرم‌کردنِ هدایت‌شده تا سرِ دوره، زمین زیر پاتون محکم باشه.</p>
+    <div class="launch-status">
+      <div class="ls-block"><span class="ls-label">مأموریت باز</span><span class="ls-value gold tnum" id="openCount">۰ / ۶</span></div>
+      <div class="ls-sep"></div>
+      <div class="ls-block"><span class="ls-label">مأموریت بعدی در</span><span class="ls-value tnum" id="countdown">--:--:--</span></div>
+    </div>
+    <div class="dare mono">DARE&nbsp;TO&nbsp;<b>CHANGE</b></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+<section class="block" id="briefing">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-kicker">BRIEFING</span><h2 class="sec-title">بریفینگِ پیش از پرتاب</h2></div>
+    <p class="sec-note" style="margin-bottom:28px">
+      توی Nimbo قراره یک پروژه‌ی واقعی بسازید و در این مسیر با کلی ابزار جدید کار کنید:
+      <span class="chip tool">Kafka</span> <span class="chip tool">HDFS</span> <span class="chip tool">Spark</span>
+      <span class="chip tool">Gerrit</span> <span class="chip tool">Jenkins</span> <span class="chip tool">Ansible</span>
+      <span class="chip tool">Kubernetes</span> <span class="chip tool">Helm</span> و… .
+      سرعت دوره بالاست و نمی‌خوایم انرژی‌تون صرف چیزهای پایه‌ای بشه.
+    </p>
+    <div class="brief-grid">
+      <div class="brief-card">
+        <h3><span class="num mono">01</span> این فاز چیه؟</h3>
+        <p>یه گرم‌کردنِ هدایت‌شده‌ست: قدم‌به‌قدم با هم ابزارهای پایه رو بالا میاریم و لمسشون می‌کنیم. شما قبلاً پروژه‌ی سحابینو رو زدید — این‌جا اون پایه‌ها رو محکم‌تر می‌کنیم و دو ابزار مهمِ دوره، Gerrit و Jenkins، رو اضافه می‌کنیم.</p>
+        <div class="pipeline mono">File Ingester <b>←</b> Kafka <b>←</b> Rule Evaluator <b>←</b> PostgreSQL <b>←</b> API</div>
+      </div>
+      <div class="brief-card">
+        <h3><span class="num mono">02</span> چطوری پیش برو</h3>
+        <p>انفرادی و با ریتم خودت (این فاز قبل از تشکیل تیم‌هاست). همه‌چی روی ماشین خودت با Docker بالا میاد؛ نه سرور می‌خواد نه ماشین مجازی. حدود یک هفته برنامه‌ریزی کن. هر جا گیر کردی از منتورت بپرس — گیر کردن بخشی از یادگیریه، اما ساعت‌ها موندن نه.</p>
+        <div class="chips"><span class="chip">انفرادی</span><span class="chip">۶ روز</span><span class="chip">روی Docker</span></div>
+      </div>
+      <div class="brief-card">
+        <h3><span class="num mono">03</span> قانون‌ها</h3>
+        <p>این فاز تحویلی و نمره‌ای نیست؛ چیزی جایی سابمیت نمی‌کنی. صرفاً برای خودته — ولی بعد از این فاز، دوره فرض می‌گیره این مهارت‌ها رو داری. پس هر مأموریت رو تا جایی برو که واقعاً «باهاش راحت» بشی، نه اینکه فقط دستورها رو کپی کنی.</p>
+        <div class="chips"><span class="chip">بدون نمره</span><span class="chip">هدف: فهمیدن</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:26px"><span class="ic">◷</span><span>هر روز یک مأموریت باز می‌شه. کنار هر عنوان یه تخمینِ زمان می‌بینی تا روزت رو بچینی. انتخاب عاقلانه اینه که مأموریتِ هر روز رو همون روز انجام بدی — ولی ما در نظر می‌گیریم که لزوماً انتخاب عاقلانه رو نمی‌کنی. 🙂</span></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+<section class="block" id="timeline">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-kicker">LAUNCH SEQUENCE</span><h2 class="sec-title">جدول زمانی مأموریت‌ها</h2></div>
+    <p class="sec-note" style="margin-bottom:36px">شش روز، شش مأموریت. هر روز یک مرحله از توالی پرتاب باز می‌شه. ترتیبْ روایی‌ست: هر ابزار پایه‌ی ابزار بعدیه.</p>
+    <div class="timeline" id="timelineRoot"><div class="rail"></div><div class="rail-fill" id="railFill" style="height:0"></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- برنامه‌ی ۹ هفته؛ برای فعال‌سازی، کامنت ابتدا و انتهای این بلوک را بردارید.
+<section class="block" id="program">
+  <div class="wrap">
+    <div class="program-intro">
+      <div>
+        <div class="sec-head" style="margin-bottom:12px"><span class="sec-kicker">BOOTCAMP ROADMAP</span><h2 class="sec-title">مسیر ۹ هفته‌ای بوت‌کمپ</h2></div>
+        <p class="sec-note">فاز صفر در هفته‌ی پیش از شروع این مسیر برگزار می‌شود. جزئیات هر هفته بعداً اعلام خواهد شد؛ ساختار انتشار در تمام هفته‌ها ثابت است.</p>
+      </div>
+      <div class="program-legend" aria-label="روال انتشار هفتگی">
+        <span class="legend-item"><b>ابتدای هفته</b> · مأموریت</span>
+        <span class="legend-item"><b>میانه‌ی هفته</b> · چالش</span>
+        <span class="legend-item"><b>پایان هفته</b> · دمو</span>
+      </div>
+    </div>
+
+      محل ویرایش محتوای بوت‌کمپ:
+      برای هر هفته، عنوان و توضیح سه بخش release-slot را با محتوای نهایی جایگزین کنید.
+      تا پیش از مشخص‌شدن جزئیات، همین متن‌های «به‌زودی» نمایش داده می‌شوند.
+
+    <div class="weeks-grid">
+      <article class="week-card" data-week="01">
+        <div class="week-head"><span class="week-num">۱</span><div><h3 class="week-title">هفته‌ی اول</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+
+      <article class="week-card" data-week="02">
+        <div class="week-head"><span class="week-num">۲</span><div><h3 class="week-title">هفته‌ی دوم</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+
+      <article class="week-card" data-week="03">
+        <div class="week-head"><span class="week-num">۳</span><div><h3 class="week-title">هفته‌ی سوم</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+
+      <article class="week-card" data-week="04">
+        <div class="week-head"><span class="week-num">۴</span><div><h3 class="week-title">هفته‌ی چهارم</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+
+      <article class="week-card" data-week="05">
+        <div class="week-head"><span class="week-num">۵</span><div><h3 class="week-title">هفته‌ی پنجم</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+
+      <article class="week-card" data-week="06">
+        <div class="week-head"><span class="week-num">۶</span><div><h3 class="week-title">هفته‌ی ششم</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+
+      <article class="week-card" data-week="07">
+        <div class="week-head"><span class="week-num">۷</span><div><h3 class="week-title">هفته‌ی هفتم</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+
+      <article class="week-card" data-week="08">
+        <div class="week-head"><span class="week-num">۸</span><div><h3 class="week-title">هفته‌ی هشتم</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+
+      <article class="week-card" data-week="09">
+        <div class="week-head"><span class="week-num">۹</span><div><h3 class="week-title">هفته‌ی نهم</h3><p class="week-subtitle">موضوع هفته به‌زودی اعلام می‌شود</p></div></div>
+        <div class="release-list">
+          <div class="release-slot"><span class="release-when">ابتدای هفته</span><div class="release-title">مأموریت یادگیری و پیاده‌سازی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">میانه‌ی هفته</span><div class="release-title">چالش برنامه‌نویسی<span>جزئیات به‌زودی منتشر می‌شود</span></div></div>
+          <div class="release-slot"><span class="release-when">پایان هفته</span><div class="release-title">دموی هفتگی<span>نمایش خروجی و دریافت بازخورد</span></div></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+-->
+
+<div class="divider"></div>
+
+<footer>
+  <div class="wrap">
+    <div class="fbrand">Nimbo</div>
+    <div class="fdare mono">DARE&nbsp;TO&nbsp;<b>CHANGE</b></div>
+    <p>موفق باشی 🚀 — هدف «کار کردن» نیست، «فهمیدن» است.</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   ▓ CONFIG — تنظیماتِ صفحه‌ی فاز صفر
+   ============================================================ */
+const CONFIG = {
+  // تاریخ شروعِ فاز صفر. مأموریتِ روزِ N در startDate + (N-1) روز، ساعت ۰۰:۰۰ محلی باز می‌شود.
+  startDate: '2026-08-01'
+};
+
+/* ============================================================
+   ▓ محتوای فاز صفر (۶ مأموریت)
+   برای افزودن/ویرایش، همین آرایه را دست بزن. ترتیب = ترتیبِ روزها.
+   ============================================================ */
+const PHASE = { code: '00', missions: [
+  {
+    title: 'مأموریت صفرم — آماده‌سازی محیط', tool: 'environment', time: '~۱.۵ ساعت',
+    tag: 'محیط کارت باید لینوکسی باشه؛ ابزارها را نصب و تست دود بزن.',
+    body: `
+      <p>کل ابزارهای این فاز و کل دوره توی دنیای واقعی روی لینوکس اجرا می‌شن. پس قبل از هر چیز باید یه شل لینوکسیِ درست داشته باشی — بقیه‌ی مأموریت‌ها همه روی همین سواره.</p>
+      <ul>
+        <li><strong>لینوکس داری؟</strong> همین رو استفاده کن. اگه نه، یه توزیع مثل Ubuntu رو کنار ویندوز <code class="inline">dual-boot</code> کن یا داخل ماشین مجازی (VirtualBox / VMware) بالا بیار.</li>
+        <li><strong>ویندوز + WSL2:</strong> حتماً از Windows Subsystem for Linux استفاده کن — نه CMD، نه PowerShell، نه Git Bash. یه Ubuntu روی WSL نصب کن و همه‌ی کارها رو داخل همون ترمینال انجام بده. Docker Desktop رو هم نصب کن و تیک «WSL2 integration» رو بزن.</li>
+      </ul>
+      <div class="callout"><span class="ic">⚑</span><span>قانون فاز: هر دستوری که این‌جا می‌بینی باید داخل یه شل لینوکسی اجرا شه — لینوکس واقعی یا Ubuntu روی WSL2. روی macOS هم اکثر چیزها یکیه (فقط جای <code class="inline">apt</code> می‌شه <code class="inline">brew</code>).</span></div>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">PowerShell (Admin)</span></div><pre><code><span class="p">&gt;</span> wsl --install</code></pre></div>
+      <p>بعد ری‌استارت کن، Ubuntu از منوی استارت باز می‌شه، یوزرنیم/پسورد بساز. حالا این‌ها رو نصب کن: <code class="inline">Git</code> · <code class="inline">Docker</code> · <code class="inline">JDK 17</code> · Editor (ترجیحاً IntelliJ).</p>
+      <div class="callout"><span class="ic">◎</span><span>نسخه‌ی JDK رو با نسخه‌ی پروژه‌ی واقعیِ دوره یکی نگه‌دار (این‌جا فرض ۱۷). اگه دوره نسخه‌ی دیگه‌ای می‌خواد، همه‌جای این فاز رو همون بذار تا بعداً سردرگم نشی.</span></div>
+      <p>حالا تست دود (!) رو داخل شل لینوکسی‌ت بزن — هر چهار تا باید بدون خطا جواب بدن:</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">smoke test</span></div><pre><code><span class="p">$</span> docker run hello-world
+<span class="p">$</span> docker compose version
+<span class="p">$</span> git --version
+<span class="p">$</span> java -version</code></pre></div>`,
+    check: `
+      <li>چرا اصرار داریم همه‌چی داخل شل لینوکسی (WSL2) اجرا شه نه PowerShell؟ فردا که اسکریپت نصب می‌نویسی این چه فرقی می‌ذاره؟</li>
+      <li><code class="inline">docker run hello-world</code> دقیقاً چی‌کار کرد و اون image از کجا اومد؟</li>`,
+    links: [{ label: 'راهنمای رسمی WSL', url: 'https://learn.microsoft.com/windows/wsl/install' }]
+  },
+  {
+    title: 'مأموریت اول — داکِر', tool: 'docker', time: '~۲ ساعت',
+    tag: 'تفاوت image و container رو بگیری، ۸۰٪ داکر رو گرفتی.',
+    body: `
+      <ul>
+        <li><strong>image</strong> یه «قالبِ فقط‌خواندنی» و ثابته (مثل کلاس).</li>
+        <li><strong>container</strong> یه نمونه‌ی در حال اجرا از اون قالبه (مثل object).</li>
+      </ul>
+      <p><code class="inline">Dockerfile</code> دستورالعمل ساختِ image و لایه‌لایه‌ست؛ داکر لایه‌ها رو cache می‌کنه — برای همین اگه فقط کد عوض شه، لایه‌های نصب وابستگی دوباره ساخته نمی‌شن.</p>
+      <p><strong>قدم‌به‌قدم:</strong> یه Dockerfile چندمرحله‌ای (multi-stage) برای اپ جاوا بنویس — یه مرحله برای بیلد با Maven، یه مرحله‌ی سبک فقط برای اجرا تا ایمیج نهایی کوچیک بمونه:</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">Dockerfile</span></div><pre><code><span class="k">FROM</span> maven:3.9-eclipse-temurin-17 <span class="k">AS</span> build
+<span class="k">WORKDIR</span> /app
+<span class="k">COPY</span> . .
+<span class="k">RUN</span> mvn -q clean package
+
+<span class="k">FROM</span> eclipse-temurin:17-jre
+<span class="k">COPY</span> --from=build /app/target/*.jar app.jar
+<span class="k">ENTRYPOINT</span> ["java","-jar","/app.jar"]</code></pre></div>
+      <p>می‌بینی که این‌جا از <code class="inline">mvn</code> استفاده کردیم؟ نگرانش نباش — میون رو مأموریت چهارم عمیق می‌شیم؛ فعلاً همین‌قدر که بدونی <code class="inline">mvn package</code> یه jar از پروژه می‌سازه کافیه.</p>
+      <p>بعد با <code class="inline">compose</code> یه استک بالا بیار (همون شکل سحابینو: اپ + Kafka + Postgres). داخل کانتینر برو (<code class="inline">docker exec -it &lt;name&gt; bash</code>)، شبکه رو <code class="inline">docker network inspect</code> کن، و یه <code class="inline">healthcheck</code> اضافه کن.</p>
+      <div class="callout"><span class="ic">◎</span><span><strong>تمرین اصلی:</strong> <code class="inline">docker compose up</code> که کار کنه؛ و بتونی توضیح بدی چرا multi-stage ایمیج رو کوچیک کرد و چطور layer cache یه rebuild رو سریع کرد.</span></div>`,
+    check: `
+      <li>چرا multi-stage ایمیج نهایی رو کوچیک کرد؟ چی توی مرحله‌ی build هست که توی ایمیج نهایی نیست؟</li>
+      <li>اگه فقط یه خط کد عوض شه، کدوم لایه‌های Dockerfile دوباره ساخته می‌شن و کدوم از cache میان؟</li>
+      <li>فرق <code class="inline">docker run</code> و <code class="inline">docker exec</code> چیه؟</li>`,
+    links: [{ label: '«Get started» رسمی داکر', url: 'https://docs.docker.com/get-started/' }, { label: 'محیط تمرین آنلاین (بدون نصب)', url: 'https://labs.play-with-docker.com' }]
+  },
+  {
+    title: 'مأموریت دوم — گریت و گیت', tool: 'git · gerrit', time: '~۳ ساعت',
+    tag: 'سنگین‌ترین مأموریت فاز — گیت رو در دلِ گریت یاد می‌گیری.',
+    body: `
+      <p>واحدِ کارِ گریت «commit» نیست، «change» است — یه صفحه‌ی بازبینیِ مستقل. اما زیرِ پوست، هر change دقیقاً یه commitِ گیته. پس نمی‌شه گریت رو لمس کرد بدون اینکه گیت زیر دستت روون باشه. برای همین این مأموریت رو دو تیکه می‌ریم: <strong>اول گیتی که گریت لازمش داره، بعد خودِ گریت روی همون.</strong></p>
+      <h4 class="part"><span class="pn">A</span> گیت — پایه‌ای که گریت روش سواره</h4>
+      <p>سه ناحیه‌ای که فهمیدنشون کلیدِ همه‌چیزه: <strong>Working Directory</strong> (فایل‌هایی که الان ویرایش می‌کنی) ← با <code class="inline">git add</code> می‌ری به <strong>Staging</strong> ← با <code class="inline">git commit</code> می‌ری به <strong>History</strong> (یه اسنپ‌شات ثابت با شناسه‌ی یکتا).</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">git basics</span></div><pre><code><span class="p">$</span> git init myrepo && cd myrepo
+<span class="p">$</span> echo "hello" &gt; a.txt
+<span class="p">$</span> git status            <span class="c"># فایلِ untracked</span>
+<span class="p">$</span> git add a.txt         <span class="c"># بردن به staging</span>
+<span class="p">$</span> git commit -m "first" <span class="c"># ثبت دائمی</span>
+<span class="p">$</span> git log --oneline     <span class="c"># تاریخچه</span></code></pre></div>
+      <p>حالا برنچ و ادغام رو حس کن:</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">branch &amp; merge</span></div><pre><code><span class="p">$</span> git switch -c feature  <span class="c"># برنچ جدید بساز و برو روش</span>
+<span class="c"># ... یه تغییر بده و commit کن ...</span>
+<span class="p">$</span> git switch main
+<span class="p">$</span> git merge feature      <span class="c"># ادغام</span></code></pre></div>
+      <p>و حالا چهار عملیاتی که <strong>مستقیماً</strong> توی بخش گریت لازمشون داری — این چهارتا رو همین‌جا خوب تمرین کن:</p>
+      <ul>
+        <li><strong>amend</strong> — <code class="inline">git commit --amend</code> آخرین کامیت رو «ویرایش» می‌کنه به‌جای ساختن کامیت جدید. این قلبِ کار با گریته: هر بار کد رو اصلاح می‌کنی، amend می‌زنی تا همون change به‌روز شه.</li>
+        <li><strong>rebase (interactive)</strong> — <code class="inline">git rebase -i</code> کامیت‌های شلخته‌ت رو تمیز و squash می‌کنه، قبل از اینکه بفرستی‌شون برای review.</li>
+        <li><strong>reset در برابر revert</strong> — reset تاریخچه رو عقب می‌بره (خطرناک، مخصوصاً <code class="inline">--hard</code>)؛ revert یه کامیت جدید می‌سازه که اثر کامیت قبلی رو خنثی می‌کنه (امن).</li>
+        <li><strong>حل conflict</strong> — عمداً یه تعارض بساز (توی دو برنچ یه خط رو جور دیگه عوض کن و merge کن) و دستی حلش کن.</li>
+      </ul>
+      <h4 class="part"><span class="pn">B</span> گریت — روی همون گیت</h4>
+      <p><strong>۱) بالا آوردن با داکر.</strong> اولین کاربری که لاگین کنه، ادمین می‌شه. برای اینکه پروژه‌ها و هوک‌هات با ری‌استارت نپرن، داده رو روی volume نگه‌دار:</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">gerrit</span></div><pre><code><span class="p">$</span> docker run -d --name gerrit \
+    -p 8080:8080 -p 29418:29418 \
+    -v gerrit-git:/var/gerrit/git \
+    -v gerrit-index:/var/gerrit/index \
+    -v gerrit-cache:/var/gerrit/cache \
+    gerritcodereview/gerrit</code></pre></div>
+      <div class="callout warn"><span class="ic">▲</span><span>بدون این <code class="inline">-v</code>ها، اگه کانتینر ری‌استارت شه وسطِ کار، پروژه‌ها و هوکِ commit-msg می‌پرن و باید از اول شروع کنی. چند دقیقه صبر کن تا پیام «Gerrit Code Review NNN ready» بیاد، بعد برو <code class="inline">http://localhost:8080</code>.</span></div>
+      <p><strong>۲) پروژه بساز، کلونش کن، و هوکِ <code class="inline">commit-msg</code> رو نصب کن.</strong> این هوک همونیه که خودکار <code class="inline">Change-Id</code> رو ته پیام کامیت می‌ذاره (گریت موقع کلون دستور دقیقش رو نشونت می‌ده):</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">commit-msg hook</span></div><pre><code><span class="p">$</span> gitdir=$(git rev-parse --git-dir)
+<span class="p">$</span> curl -Lo $gitdir/hooks/commit-msg \
+    http://localhost:8080/tools/hooks/commit-msg
+<span class="p">$</span> chmod +x $gitdir/hooks/commit-msg</code></pre></div>
+      <p><strong>۳) تغییر بده، commit کن، و با push مخصوص گریت بفرست:</strong></p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">push for review</span></div><pre><code><span class="p">$</span> git push origin HEAD:refs/for/master</code></pre></div>
+      <p>چرا <code class="inline">refs/for/master</code> و نه <code class="inline">refs/heads/master</code>؟ چون داری می‌گی «این رو <em>برای بازبینی</em> روی برنچ master بفرست»، نه «مستقیم روی master بنشون». این قلبِ مدل گریته.</p>
+      <p><strong>۴) توی UI:</strong> یه reviewer اضافه کن، روی خطوط کد inline comment بذار، reply کن و بعضی‌ها رو Resolved علامت بزن.</p>
+      <p><strong>۵) اینجا گیت به دادت می‌رسه:</strong> کد رو اصلاح کن، <code class="inline">git commit --amend</code> بزن (به <code class="inline">Change-Id</code> دست نزن!)، دوباره push کن → ببین <strong>Patch Set 2</strong> ساخته می‌شه، نه یه change جدید. توی UI می‌تونی Patch Set 1 و 2 رو با هم diff (interdiff) کنی.</p>
+      <p><strong>۶)</strong> به‌عنوان ادمین بهش <code class="inline">+2</code> بده و Submit کن؛ ببین merge می‌شه.</p>
+      <div class="callout"><span class="ic">◎</span><span><strong>تمرین اصلی:</strong> یه change رو کامل از comment تا amend تا +2 و submit رد کن. <strong>امتیازی:</strong> دو change وابسته روی هم بساز (relation chain) و ببین گریت زنجیره‌ی وابستگی‌شون رو چطور نشون می‌ده — این دقیقاً همون تاریخچه‌ی خطیِ گیته که توی بخش A ساختی.</span></div>`,
+    check: `
+      <li>اگه وسط کار <code class="inline">Change-Id</code> رو دستی از پیام کامیت پاک کنی و push کنی، گریت چی‌کار می‌کنه و چرا؟</li>
+      <li>فرقِ «یک change با ۳ patch set» و «۳ change جدا» چیه؟ کدوم رو <code class="inline">git commit --amend</code> می‌سازه و کدوم رو <code class="inline">git commit</code> جدید؟</li>
+      <li>چرا <code class="inline">refs/for/master</code> نه <code class="inline">refs/heads/master</code>؟ اگه اشتباهی دومی رو بزنی چه اتفاقی می‌افته؟</li>`,
+    links: [
+      { label: 'راهنمای کاربر گریت (همین workflow)', url: 'https://gerrit-review.googlesource.com/Documentation/intro-user.html' },
+      { label: 'بازی تعاملی branch/merge/rebase', url: 'https://learngitbranching.js.org' },
+      { label: 'کتاب Pro Git (فارسی) — فصل‌های ۲ و ۳', url: 'https://git-scm.com/book/fa/v2' },
+      { label: 'ایمیج رسمی گریت روی داکر', url: 'https://hub.docker.com/r/gerritcodereview/gerrit' }
+    ]
+  },
+  {
+    title: 'مأموریت سوم — بَش', tool: 'bash', time: '~۱.۵ ساعت',
+    tag: 'شل فقط «خط فرمان» نیست؛ یه زبونِ برنامه‌نویسیه.',
+    body: `
+      <p>ایده‌ی مرکزیش: هر دستور یه جریان متن تولید می‌کنه، و تو با <code class="inline">|</code> (pipe) خروجی یکی رو می‌دی خوراکِ بعدی. سر دوره کلی اسکریپتِ نصب زیرساخت می‌نویسید، پس این عضله باید گرم باشه.</p>
+      <p>یه فایل بساز و اولش این خط (shebang) رو بذار، یعنی «این فایل رو با bash اجرا کن»:</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">test.sh</span></div><pre><code>#!/usr/bin/env bash
+set -euo pipefail   <span class="c"># خط طلا: با اولین خطا متوقف شو، متغیر تعریف‌نشده = خطا</span>
+
+DIR="$1"            <span class="c"># اولین آرگومانی که موقع صدا زدن اسکریپت می‌دی</span>
+echo "Processing Directory $DIR"
+
+for f in "$DIR"/*.log; do
+  errors=$(grep -c "ERROR" "$f")   <span class="c"># خروجی دستور رو می‌ریزه توی متغیر</span>
+  echo "$f -> $errors خطا"
+done</code></pre></div>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">run</span></div><pre><code><span class="p">$</span> chmod +x ./test.sh   <span class="c"># قابل اجرا کن</span>
+<span class="p">$</span> ./test.sh /var/log</code></pre></div>
+      <p>این‌جا <code class="inline">grep -c</code> تعداد خطوط شامل ERROR رو می‌شمره. با <code class="inline">awk</code> می‌تونی حرفه‌ای‌ترش کنی.</p>
+      <div class="callout"><span class="ic">◎</span><span><strong>تمرین اصلی:</strong> یه اسکریپت <code class="inline">logwatch.sh</code> بنویس که پوشه‌ی لاگ رو بگیره و تعداد ERROR/WARN/INFO رو خلاصه چاپ کنه. (آشنا نیست؟ این همون File Ingester سحابینوئه، این بار در bash!) <strong>امتیازی:</strong> حالت <code class="inline">--watch</code> که هر چند ثانیه پوشه رو نگاه کنه و فایل جدید رو پردازش کنه.</span></div>`,
+    check: `
+      <li><code class="inline">set -euo pipefail</code> هر تیکه‌ش چی‌کار می‌کنه و چرا بهش می‌گن «خط طلا»؟</li>
+      <li><code class="inline">grep -c</code> چی برمی‌گردونه؟ اگه بخوای خودِ خطوطِ ERROR رو ببینی نه تعدادشون، چی عوض می‌شه؟</li>`,
+    links: [
+      { label: 'The Missing Semester (MIT) — درس‌های ۱ و ۲', url: 'https://missing.csail.mit.edu' },
+      { label: 'explainshell — هر دستوری رو تیکه‌تیکه توضیح می‌ده', url: 'https://explainshell.com' },
+      { label: 'shellcheck — اشکالات اسکریپتت رو می‌گیره', url: 'https://www.shellcheck.net' }
+    ]
+  },
+  {
+    title: 'مأموریت چهارم — مِیوِن', tool: 'maven', time: '~۱ ساعت',
+    tag: 'ابزار بیلد و مدیریت وابستگیِ جاوا.',
+    body: `
+      <p>Maven دو کار اصلی می‌کنه: (۱) کتابخونه‌هایی که کدت لازم داره رو خودکار از یه مخزن دانلود می‌کنه (سر دوره این مخزن Nexus داخلیه)، و (۲) پروژه رو طی یه چرخه‌ی حیات استاندارد می‌سازه. همه‌چی توی <code class="inline">pom.xml</code> تعریف می‌شه.</p>
+      <p>فازهای مهمِ چرخه‌ی حیات رو حفظ نکن، حسشون کن — هر کدوم قبلی‌ها رو هم اجرا می‌کنه:</p>
+      <div class="pipeline mono">validate <b>&rarr;</b> compile <b>&rarr;</b> test <b>&rarr;</b> package <b>&rarr;</b> verify <b>&rarr;</b> install</div>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">maven</span></div><pre><code><span class="p">$</span> mvn compile          <span class="c"># فقط کامپایل</span>
+<span class="p">$</span> mvn test             <span class="c"># کامپایل + اجرای تست‌ها</span>
+<span class="p">$</span> mvn package          <span class="c"># توی /target یه jar می‌سازه</span>
+<span class="p">$</span> mvn dependency:tree  <span class="c"># درخت وابستگی‌ها — خیلی آموزنده‌ست</span></code></pre></div>
+      <p>مفاهیمی که باید بفهمی: تفاوتِ <code class="inline">package</code> و <code class="inline">install</code> (اولی jar می‌سازه، دومی همون رو توی مخزن محلیِ خودت هم می‌ذاره تا پروژه‌های دیگه‌ات ببیننش)، <code class="inline">scope</code> وابستگی‌ها (compile / provided / test)، و اینکه یه پلاگین (مثل shade) چطور یه <strong>fat jar</strong> (jar شاملِ همه‌ی وابستگی‌ها) می‌سازه که با <code class="inline">java -jar</code> مستقیم اجرا شه.</p>
+      <div class="callout"><span class="ic">◎</span><span><strong>تمرین اصلی:</strong> روی همون پروژه‌ی جاوا یه dependency اضافه کن، یه fat jar بساز، و <code class="inline">mvn dependency:tree</code> رو بخون و بفهم هر کتابخونه از کجا اومده. (یادت باشه همین <code class="inline">mvn package</code> بود که مأموریت داکر توی Dockerfile ازش استفاده کرد.)</span></div>`,
+    check: `
+      <li>فرقِ عملیِ <code class="inline">mvn package</code> و <code class="inline">mvn install</code> کجا خودش رو نشون می‌ده؟ کِی واقعاً به install نیاز داری؟</li>
+      <li>یه dependency با <code class="inline">scope=test</code> چرا توی jar نهایی نمیاد؟</li>
+      <li>fat jar با jar معمولی چه فرقی داره که با <code class="inline">java -jar</code> مستقیم بالا میاد؟</li>`,
+    links: [
+      { label: 'Maven in 5 Minutes (رسمی)', url: 'https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html' },
+      { label: 'راهنمای شروع رسمی', url: 'https://maven.apache.org/guides/getting-started/' }
+    ]
+  },
+  {
+    title: 'مأموریت پنجم — جِنکینز', tool: 'jenkins', time: '~۲.۵ ساعت',
+    tag: 'سرورِ CI که همه‌ی ابزارهای قبلی رو به هم گره می‌زنه.',
+    body: `
+      <p><strong>CI یعنی چی؟</strong> به‌جای اینکه دستی build و test کنی، یه سرور این کار رو با <em>هر</em> تغییرِ کد خودکار انجام می‌ده و اگه چیزی خراب شد، فوری خبر می‌ده. هدفِ نهاییِ این مأموریت اینه: هر push به گریت، خودکار build و تست شه — یعنی گریتِ مأموریت قبل رو به جنکینز وصل کنیم.</p>
+      <p>کارِ جنکینز رو با یه فایل به اسم <code class="inline">Jenkinsfile</code> توی ریپوت تعریف می‌کنی (بهش می‌گن pipeline-as-code).</p>
+      <h4 class="part"><span class="pn">۱</span> بالا آوردن</h4>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">jenkins</span></div><pre><code><span class="p">$</span> docker run -d --name jenkins \
+    -p 8090:8080 -p 50000:50000 \
+    -v jenkins_home:/var/jenkins_home \
+    jenkins/jenkins:lts</code></pre></div>
+      <p>پورتِ جنکینز رو <code class="inline">8090</code> گذاشتیم تا با گریتِ روی <code class="inline">8080</code> تداخل نکنه. پسوردِ ادمینِ اولیه رو از لاگ‌ها بردار، بعد پلاگین‌های پیشنهادی رو نصب کن:</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">initial admin password</span></div><pre><code><span class="p">$</span> docker logs jenkins 2&gt;&amp;1 | grep -A2 password</code></pre></div>
+      <h4 class="part"><span class="pn">۲</span> کالبدشناسیِ pipeline</h4>
+      <p>ساختارِ declarative خیلی خواناست. یه job از نوع Pipeline بساز و این Jenkinsfile رو بهش بده:</p>
+      <div class="term"><div class="term-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="t">Jenkinsfile</span></div><pre><code>pipeline {
+  agent any                 <span class="c">// کجا اجرا شه</span>
+  stages {                  <span class="c">// مراحلِ کار</span>
+    stage('Build') { steps { sh 'mvn -q clean package -DskipTests' } }
+    stage('Test')  { steps { sh 'mvn test' } }
+  }
+  post {                    <span class="c">// بعد از اتمام، مهم‌ترین بخش</span>
+    always  {
+      junit 'target/surefire-reports/*.xml'       <span class="c">// گزارش تست‌ها</span>
+      archiveArtifacts artifacts: 'target/*.jar'   <span class="c">// نگه‌داشتن خروجی</span>
+    }
+    success { echo '✅ سبز شد' }
+    failure { echo '❌ یه چیزی خراب شد' }
+  }
+}</code></pre></div>
+      <ul>
+        <li><code class="inline">agent</code> می‌گه روی چه ماشین/محیطی اجرا شه.</li>
+        <li><code class="inline">stages</code> مراحلِ پشت‌سرهمِ کارن؛ هر stage چند step داره.</li>
+        <li><code class="inline">post</code> بعد از تموم شدن اجرا می‌شه: <code class="inline">always</code> همیشه (برای publish گزارش)، <code class="inline">success</code>/<code class="inline">failure</code> فقط در آن حالت.</li>
+      </ul>
+      <p>بعد گسترشش بده: از <code class="inline">when</code> برای اجرای شرطیِ یه stage و از <code class="inline">parallel</code> برای موازی‌کردن استفاده کن.</p>
+      <div class="callout warn"><span class="ic">▲</span><span>گاتچا: اگه توی pipeline بخوای <code class="inline">sh 'docker build ...'</code> بزنی، داخل کانتینرِ جنکینز به‌طور پیش‌فرض داکر نیست. باید سوکتِ داکر میزبان رو مانت کنی: <code class="inline">-v /var/run/docker.sock:/var/run/docker.sock</code>.</span></div>
+      <h4 class="part"><span class="pn">۳</span> وصل‌کردن به گریت — حلقه بسته می‌شه</h4>
+      <p>این تیکه‌ی طلاییِ فازه: پلاگینِ <strong>Gerrit Trigger</strong> رو نصب کن و به گریتِ مأموریت قبل وصلش کن (روی پورتِ SSH یعنی <code class="inline">29418</code>، با یه یوزر). ترتیبش:</p>
+      <ol>
+        <li>توی Manage Jenkins یه Gerrit server اضافه کن (آدرس، پورت 29418، یوزر و کلید).</li>
+        <li>روی job، تریگر رو بذار روی رویدادِ <code class="inline">patchset-created</code> برای <code class="inline">refs/for/**</code>.</li>
+        <li>تنظیم کن که بعد از build نتیجه رو به‌صورت رأیِ <strong>Verified (+1/-1)</strong> روی همون change برگردونه.</li>
+      </ol>
+      <p>حالا هر بار به گریت push کنی → جنکینز خودکار build و test می‌کنه → رأی Verified می‌ذاره روی change. حالا دو ابزارِ اصلیِ دوره با هم حرف می‌زنن.</p>
+      <div class="callout"><span class="ic">◎</span><span><strong>تمرین اصلی:</strong> یه pipeline که اپ جاوا رو build و test کنه و گزارش تست رو نشون بده. <strong>امتیازی:</strong> حلقه‌ی گریت→جنکینز→رأی Verified رو کامل راه بنداز.</span></div>`,
+    check: `
+      <li>فرقِ <code class="inline">always</code>، <code class="inline">success</code> و <code class="inline">failure</code> توی بلوکِ <code class="inline">post</code> چیه؟ گزارشِ تست رو کدوم باید publish کنه و چرا؟</li>
+      <li>چرا <code class="inline">sh 'docker build'</code> داخل کانتینرِ جنکینز به‌طور پیش‌فرض کار نمی‌کنه؟</li>
+      <li>توی حلقه‌ی گریت→جنکینز، رأیِ <strong>Verified</strong> از کجا میاد و فرقش با رأیِ <strong>Code-Review (+2)</strong> چیه؟</li>`,
+    links: [
+      { label: '«اولین Pipeline» رسمی جنکینز', url: 'https://www.jenkins.io/doc/pipeline/tour/hello-world/' },
+      { label: 'کتاب Pipeline رسمی', url: 'https://www.jenkins.io/doc/book/pipeline/' },
+      { label: 'پلاگین Gerrit Trigger', url: 'https://plugins.jenkins.io/gerrit-trigger/' }
+    ]
+  }
+]};
+
+/* ============================================================
+   ▓ کمکی‌ها
+   ============================================================ */
+const faDigits = s => String(s).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const $ = sel => document.querySelector(sel);
+
+/* ============================================================
+   ▓ رندرِ تایم‌لاینِ فاز صفر
+   ============================================================ */
+const previewMode = false;
+function unlockDate(offset){ const d = new Date(CONFIG.startDate + 'T00:00:00'); d.setDate(d.getDate()+offset); return d; }
+function isUnlocked(offset){ return previewMode || new Date() >= unlockDate(offset); }
+function fmtDate(d){ return d.toLocaleDateString('fa-IR', { month:'long', day:'numeric' }); }
+function lockRing(){ return `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 16 A16 16 0 0 1 38 16" fill="none" stroke="rgba(182,154,214,.4)" stroke-width="2.4" stroke-linecap="round"/><path d="M10 32 A16 16 0 0 0 38 32" fill="none" stroke="rgba(182,154,214,.4)" stroke-width="2.4" stroke-linecap="round"/></svg><span class="glyph" style="color:var(--lav-dim)">🔒</span>`; }
+function openRing(num){ return `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 16 A16 16 0 0 1 38 16" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="M10 32 A16 16 0 0 0 38 32" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="24" cy="24" r="15" fill="none" stroke="var(--gold)" stroke-width="2" opacity=".55"/></svg><span class="glyph" style="color:var(--gold)">${faDigits(num)}</span>`; }
+function timeTag(m){ return m.time ? `<span class="m-time tnum">⏱ ${m.time}</span>` : ''; }
+
+function renderTimeline(){
+  const root = $('#timelineRoot');
+  root.querySelectorAll('.mission').forEach(n=>n.remove());
+  let openN=0, firstLocked=null, lastOpen=-1;
+  PHASE.missions.forEach((m,i)=>{
+    const open = isUnlocked(i);
+    if (open){ openN++; lastOpen=i; } else if (firstLocked===null) firstLocked=i;
+    const uDate = unlockDate(i);
+    const el = document.createElement('div');
+    el.className = 'mission ' + (open?'open':'locked');
+    const links = (m.links||[]).map(l=>`<a href="${l.url}" target="_blank" rel="noopener"><span class="arrow">↗</span><span>${l.label}</span><span class="u">${l.url.replace(/^https?:\/\//,'')}</span></a>`).join('');
+    const checkBlock = m.check ? `<div class="check"><div class="check-h"><span class="qm">؟</span>مطمئن شو یاد گرفتی</div><ul>${m.check}</ul></div>` : '';
+    if (open){
+      el.innerHTML = `<div class="node">${openRing(i)}</div><div class="m-card">
+        <button class="m-head" aria-expanded="false">
+          <span class="daytag tnum">روز ${faDigits(i+1)}</span>
+          <span class="m-titles"><span class="m-title">${m.title}<span class="m-tool mono">${m.tool}</span>${timeTag(m)}</span><span class="m-tag">${m.tag}</span></span>
+          <span class="m-state"><span class="lbl">باز شد</span> ●</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="m-body"><div class="m-body-inner">${m.body}${checkBlock}${links?`<div class="res"><div class="res-title mono">منابع</div>${links}</div>`:''}</div></div>
+      </div>`;
+    } else {
+      el.innerHTML = `<div class="node">${lockRing()}</div><div class="m-card">
+        <div class="m-head">
+          <span class="daytag tnum">روز ${faDigits(i+1)}</span>
+          <span class="m-titles"><span class="m-title">${m.title}<span class="m-tool mono">${m.tool}</span>${timeTag(m)}</span><span class="m-tag">قفل — این مأموریت روزِ خودش فعال می‌شه.</span></span>
+          <span class="m-state">🔒</span>
+        </div>
+        <div class="locked-msg"><span class="tnum">باز می‌شود: روز ${faDigits(i+1)} · ${fmtDate(uDate)}</span>${i===firstLocked?`<span class="cd tnum" data-countdown="${i}"></span>`:''}</div>
+      </div>`;
+    }
+    root.appendChild(el);
+  });
+  const fill = $('#railFill'); const nodes = root.querySelectorAll('.mission');
+  if (lastOpen>=0 && nodes[lastOpen]){
+    const y = nodes[lastOpen].querySelector('.node').getBoundingClientRect().top - root.getBoundingClientRect().top + 24;
+    fill.style.height = Math.max(0,y-16)+'px'; nodes[lastOpen].classList.add('active');
+  } else fill.style.height='0px';
+  $('#openCount').textContent = faDigits(openN)+' / '+faDigits(PHASE.missions.length);
+  document.querySelectorAll('.mission.open .m-head').forEach(head=>{
+    head.addEventListener('click',()=>{
+      const mission = head.closest('.mission'); const body = mission.querySelector('.m-body');
+      const ex = mission.classList.toggle('expanded'); head.setAttribute('aria-expanded',ex);
+      body.style.maxHeight = ex ? body.scrollHeight+'px' : '0';
+    });
+  });
+  window._firstLocked = firstLocked; updateCountdown();
+}
+function updateCountdown(){
+  const off = window._firstLocked; const cdEl = $('#countdown');
+  if (off===null || off===undefined){ cdEl.textContent='باز شده'; document.querySelectorAll('[data-countdown]').forEach(e=>e.textContent=''); return; }
+  const diff = unlockDate(off).getTime() - Date.now();
+  if (diff<=0){ renderTimeline(); return; }
+  const dd=Math.floor(diff/864e5), hh=Math.floor(diff%864e5/36e5), mm=Math.floor(diff%36e5/6e4), ss=Math.floor(diff%6e4/1e3);
+  const pad=n=>String(n).padStart(2,'0');
+  const label=(dd>0?faDigits(dd)+' روز ':'')+faDigits(`${pad(hh)}:${pad(mm)}:${pad(ss)}`);
+  cdEl.textContent=label;
+  document.querySelectorAll('[data-countdown]').forEach(e=>e.textContent=' · تا '+label);
+}
+
+/* ============================================================
+   ▓ راه‌اندازی
+   ============================================================ */
+function boot(){
+  renderTimeline();
+  setInterval(updateCountdown, 1000);
+  window.addEventListener('resize', () => {
+    const root = $('#timelineRoot'); const a = root.querySelector('.mission.active .node'); const fill = $('#railFill');
+    if (a){ const y = a.getBoundingClientRect().top - root.getBoundingClientRect().top + 24; fill.style.height = Math.max(0, y-16) + 'px'; }
+  });
+}
+boot();
+</script>
+</body>
+</html>
