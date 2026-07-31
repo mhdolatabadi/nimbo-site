@@ -450,7 +450,7 @@ const PHASE = { code: '00', missions: [
 <span class="k">FROM</span> eclipse-temurin:17-jre
 <span class="k">COPY</span> --from=build /app/target/*.jar app.jar
 <span class="k">ENTRYPOINT</span> ["java","-jar","/app.jar"]</code></pre></div>
-      <p>می‌بینی که این‌جا از <code class="inline">mvn</code> استفاده کردیم؟ نگرانش نباش — میون رو مأموریت چهارم عمیق می‌شیم؛ فعلاً همین‌قدر که بدونی <code class="inline">mvn package</code> یه jar از پروژه می‌سازه کافیه.</p>
+      <p>می‌بینی که این‌جا از <code class="inline">mvn</code> استفاده کردیم؟ نگرانش نباش — مِیْ‌وِنْ رو مأموریت چهارم عمیق می‌شیم؛ فعلاً همین‌قدر که بدونی <code class="inline">mvn package</code> یه jar از پروژه می‌سازه کافیه.</p>
       <p>بعد با <code class="inline">compose</code> یه استک بالا بیار (همون شکل سحابینو: اپ + Kafka + Postgres). داخل کانتینر برو (<code class="inline">docker exec -it &lt;name&gt; bash</code>)، شبکه رو <code class="inline">docker network inspect</code> کن، و یه <code class="inline">healthcheck</code> اضافه کن.</p>
       <div class="callout"><span class="ic">◎</span><span><strong>تمرین اصلی:</strong> <code class="inline">docker compose up</code> که کار کنه؛ و بتونی توضیح بدی چرا multi-stage ایمیج رو کوچیک کرد و چطور layer cache یه rebuild رو سریع کرد.</span></div>`,
     check: `
