@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react';
 
 const ENVIRONMENTS = {
   linux: {
-    title: 'Linux واقعی',
+    title: 'Linux / Dual boot',
     badge: 'مسیر مستقیم',
-    summary: 'اگر از قبل لینوکس داری، همان محیط بهترین و کم‌واسطه‌ترین انتخاب است.',
+    summary: 'اگر Linux نصب داری یا با dual boot وارد آن می‌شوی، مستقیم در همان محیط ادامه بده.',
     steps: ['سخت‌افزار', 'Linux', 'Shell', 'Git · Docker · Java'],
-    note: 'همه‌ی دستورها مستقیم روی سیستم‌عامل لینوکسی اجرا می‌شوند.',
+    note: 'در حالت dual boot، ابزارها داخل پارتیشن و سیستم‌عامل Linux اجرا می‌شوند، نه Windows.',
     prompt: 'nimbo@linux:~$',
   },
   wsl: {
@@ -66,8 +66,8 @@ export function EnvironmentPath() {
           ))}
         </div>
         <div className="environment-shell">
-          <code>{env.prompt} pwd</code>
-          <span>/home/nimbo</span>
+          <code>{env.prompt} echo $SHELL</code>
+          <span>/bin/bash</span>
         </div>
         <p>{env.note}</p>
       </div>

@@ -31,7 +31,7 @@ export default function Timeline({ phase }) {
           <h2 className="sec-title">جدول زمانی مأموریت‌ها</h2>
         </div>
         <p className="sec-note" style={{ marginBottom: 36 }}>
-          شش روز، شش مأموریت. هر روز یک مرحله از توالی پرتاب باز می‌شه. ترتیبْ روایی‌ست: هر ابزار پایه‌ی ابزار بعدیه.
+          هفت روز، هفت مأموریت. هر روز یک مرحله از توالی پرتاب باز می‌شه. ترتیبْ روایی‌ست: هر مأموریت بخشی از تصویر نهایی سیستم رو می‌سازه.
         </p>
         <div className="timeline" ref={rootRef}>
           <div className="rail" />

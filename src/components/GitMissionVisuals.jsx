@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react';
 import { FOUNDATION_WIDGETS } from './FoundationMissionVisuals';
+import { COURSE_WIDGETS } from './CourseMissionVisuals';
+import { VIDEO_WIDGETS, EmbeddedVideoPlaylist } from './VideoMissionVisuals';
+import { FINAL_WIDGETS } from './FinalMissionVisuals';
 
 function FileIcon() {
   return (
@@ -220,48 +223,8 @@ export function GitOperationCards() {
   );
 }
 
-const VIDEOS = [
-  {
-    part: 'بخش ۰۱',
-    title: 'Gerrit — Part 1',
-    url: 'https://www.youtube.com/watch?v=icmCXVJfC_k',
-    focus: 'پروژه، clone، commit، push و ساخته‌شدن Change',
-  },
-  {
-    part: 'بخش ۰۲',
-    title: 'Gerrit — Part 2',
-    url: 'https://www.youtube.com/watch?v=OL7TldzyXtY',
-    focus: 'review، اصلاح، Patch Set تازه، امتیاز و Submit',
-  },
-];
-
 export function GerritVideos() {
-  return (
-    <section dir="rtl" className="concept-panel video-panel" aria-labelledby="gerrit-video-title">
-      <div className="concept-head compact">
-        <span className="concept-kicker">ورکشاپ ویدئویی</span>
-        <h5 id="gerrit-video-title">دو قسمت را به‌ترتیب ببین</h5>
-        <p>هدفت حفظ‌کردن UI نیست؛ مسیر یک تغییر را از Git تا review و Submit شکار کن.</p>
-      </div>
-      <div className="video-card-grid">
-        {VIDEOS.map((video) => (
-          <a key={video.url} className="video-card" href={video.url} target="_blank" rel="noopener noreferrer">
-            <span className="video-play" aria-hidden="true"><i /></span>
-            <span className="video-copy">
-              <small>{video.part}</small>
-              <strong>{video.title}</strong>
-              <span>{video.focus}</span>
-            </span>
-            <span className="video-open">↗</span>
-          </a>
-        ))}
-      </div>
-      <div className="watch-checklist">
-        <span>موقع تماشا پیدا کن:</span>
-        <b>refs/for</b><b>Change-Id</b><b>inline comment</b><b>Patch Set</b><b>+2</b><b>Submit</b>
-      </div>
-    </section>
-  );
+  return <EmbeddedVideoPlaylist group="gerrit" />;
 }
 
 export function GerritChangeModel() {
@@ -377,6 +340,9 @@ export function GerritWorkflow() {
 
 const WIDGETS = {
   ...FOUNDATION_WIDGETS,
+  ...COURSE_WIDGETS,
+  ...VIDEO_WIDGETS,
+  ...FINAL_WIDGETS,
   'git-file-flow': GitFileFlow,
   'git-repo-map': GitRepositoryMap,
   'git-operations': GitOperationCards,
