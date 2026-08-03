@@ -66,7 +66,7 @@ export function GitFileFlow() {
   const current = FILE_STEPS[step];
 
   return (
-    <section className="concept-panel git-file-panel" aria-labelledby="git-file-flow-title">
+    <section dir="rtl" className="concept-panel git-file-panel" aria-labelledby="git-file-flow-title">
       <div className="concept-head">
         <span className="concept-kicker">مدل سه‌ناحیه‌ای Git</span>
         <h5 id="git-file-flow-title">فایل دقیقاً کجاست؟</h5>
@@ -125,13 +125,13 @@ export function GitFileFlow() {
 
 export function GitRepositoryMap() {
   return (
-    <section className="concept-panel repo-map-panel" aria-labelledby="repo-map-title">
+    <section dir="rtl" className="concept-panel repo-map-panel" aria-labelledby="repo-map-title">
       <div className="concept-head compact">
         <span className="concept-kicker">نقشه‌ی مخزن</span>
         <h5 id="repo-map-title">local، remote و origin یکی نیستند</h5>
       </div>
 
-      <div className="repo-map" dir="ltr">
+      <div className="repo-map" dir="rtl">
         <article className="repo-node local-repo">
           <span className="repo-icon"><RepoIcon /></span>
           <div>
@@ -139,14 +139,14 @@ export function GitRepositoryMap() {
             <h6>Local repository</h6>
           </div>
           <div className="repo-mini-flow">
-            <span>Working</span><i>→</i><span>Staging</span><i>→</i><span>History</span>
+            <span>Working</span><i>←</i><span>Staging</span><i>←</i><span>History</span>
           </div>
         </article>
 
         <div className="repo-connection">
-          <div className="repo-route push"><code>git push</code><span>→</span></div>
+          <div className="repo-route push"><code>git push</code><span>←</span></div>
           <span className="origin-badge"><b>origin</b><small>نامِ این اتصال</small></span>
-          <div className="repo-route fetch"><span>←</span><code>git fetch / pull</code></div>
+          <div className="repo-route fetch"><span>→</span><code>git fetch / pull</code></div>
         </div>
 
         <article className="repo-node remote-repo">
@@ -201,7 +201,7 @@ const OPERATIONS = [
 
 export function GitOperationCards() {
   return (
-    <section className="concept-panel operations-panel" aria-labelledby="git-ops-title">
+    <section dir="rtl" className="concept-panel operations-panel" aria-labelledby="git-ops-title">
       <div className="concept-head compact">
         <span className="concept-kicker">چهار عضله‌ی لازم برای Gerrit</span>
         <h5 id="git-ops-title">عملیات‌هایی که باید زیر دستت روان باشند</h5>
@@ -236,7 +236,7 @@ const VIDEOS = [
 
 export function GerritVideos() {
   return (
-    <section className="concept-panel video-panel" aria-labelledby="gerrit-video-title">
+    <section dir="rtl" className="concept-panel video-panel" aria-labelledby="gerrit-video-title">
       <div className="concept-head compact">
         <span className="concept-kicker">ورکشاپ ویدئویی</span>
         <h5 id="gerrit-video-title">دو قسمت را به‌ترتیب ببین</h5>
@@ -268,7 +268,7 @@ export function GerritChangeModel() {
   const isAmend = mode === 'amend';
 
   return (
-    <section className="concept-panel gerrit-model-panel" aria-labelledby="gerrit-model-title">
+    <section dir="rtl" className="concept-panel gerrit-model-panel" aria-labelledby="gerrit-model-title">
       <div className="concept-head">
         <span className="concept-kicker">مدل ذهنی Gerrit</span>
         <h5 id="gerrit-model-title">Change ظرفِ review است؛ Patch Set نسخه‌ی داخل آن</h5>
@@ -343,7 +343,7 @@ export function GerritWorkflow() {
   const current = useMemo(() => GERRIT_STAGES[active], [active]);
 
   return (
-    <section className="concept-panel gerrit-workflow-panel" aria-labelledby="gerrit-workflow-title">
+    <section dir="rtl" className="concept-panel gerrit-workflow-panel" aria-labelledby="gerrit-workflow-title">
       <div className="concept-head compact">
         <span className="concept-kicker">چرخه‌ی کامل</span>
         <h5 id="gerrit-workflow-title">یک تغییر از ادیتور تا master</h5>
