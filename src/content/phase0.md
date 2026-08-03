@@ -80,85 +80,95 @@ tool: git · gerrit
 time: ~۳ ساعت
 tag: سنگین‌ترین مأموریت فاز — گیت رو در دلِ گریت یاد می‌گیری.
 ---
-واحدِ کارِ گریت «commit» نیست، «change» است — یه صفحه‌ی بازبینیِ مستقل. اما زیرِ پوست، هر change دقیقاً یه commitِ گیته. پس نمی‌شه گریت رو لمس کرد بدون اینکه گیت زیر دستت روون باشه. برای همین این مأموریت رو دو تیکه می‌ریم: **اول گیتی که گریت لازمش داره، بعد خودِ گریت روی همون.**
+واحدِ کارِ گریت فقط `commit` نیست، **change** است — یه صفحه‌ی مستقل برای بازبینی، گفت‌وگو و نسخه‌های مختلفِ یک تغییر. اما زیرِ پوست هر change، کامیت‌های گیته. پس اول گیتی رو تمرین می‌کنی که برای فهمیدن گریت لازمه؛ بعد workflow گریت رو توی دو ویدئو دنبال می‌کنی.
 
 ## A) گیت — پایه‌ای که گریت روش سواره
-سه ناحیه‌ای که فهمیدنشون کلیدِ همه‌چیزه: **Working Directory** (فایل‌هایی که الان ویرایش می‌کنی) ← با `git add` می‌ری به **Staging** ← با `git commit` می‌ری به **History** (یه اسنپ‌شات ثابت با شناسه‌ی یکتا).
+
+:::widget git-file-flow
+
+حالا همین مسیر رو واقعاً اجرا کن. بعد از هر دستور `git status` بزن و قبل از دیدن خروجی، حدس بزن فایل کجاست و چه وضعیتی داره.
 
 ```git basics
 $ git init myrepo && cd myrepo
 $ echo "hello" > a.txt
-$ git status            # فایلِ untracked
-$ git add a.txt         # بردن به staging
-$ git commit -m "first" # ثبت دائمی
-$ git log --oneline     # تاریخچه
+$ git status            # untracked در Working Directory
+$ git add a.txt         # نسخه‌ی فعلی وارد Staging می‌شه
+$ git commit -m "first" # snapshot وارد History می‌شه
+$ git log --oneline
 ```
 
-حالا برنچ و ادغام رو حس کن:
+:::widget git-repo-map
+
+برای دیدن اتصال‌های مخزن و branchهای محلی از این دو دستور استفاده کن:
+
+```local & remote
+$ git remote -v
+$ git branch -vv
+```
+
+حالا branch و merge رو حس کن. `git switch` برای ساختن و جابه‌جایی بین branchها خواناتر از `git checkout` قدیمیه.
 
 ```branch & merge
-$ git switch -c feature  # برنچ جدید بساز و برو روش
+$ git switch -c feature
 # ... یه تغییر بده و commit کن ...
 $ git switch main
-$ git merge feature      # ادغام
+$ git merge feature
 ```
 
-و حالا چهار عملیاتی که **مستقیماً** توی بخش گریت لازمشون داری — این چهارتا رو همین‌جا خوب تمرین کن:
+:::widget git-operations
 
-- **amend** — `git commit --amend` آخرین کامیت رو «ویرایش» می‌کنه به‌جای ساختن کامیت جدید. این قلبِ کار با گریته: هر بار کد رو اصلاح می‌کنی، amend می‌زنی تا همون change به‌روز شه.
-- **rebase (interactive)** — `git rebase -i` کامیت‌های شلخته‌ت رو تمیز و squash می‌کنه، قبل از اینکه بفرستی‌شون برای review.
-- **reset در برابر revert** — reset تاریخچه رو عقب می‌بره (خطرناک، مخصوصاً `--hard`)؛ revert یه کامیت جدید می‌سازه که اثر کامیت قبلی رو خنثی می‌کنه (امن).
-- **حل conflict** — عمداً یه تعارض بساز (توی دو برنچ یه خط رو جور دیگه عوض کن و merge کن) و دستی حلش کن.
+این چهارتا رو فقط نخون؛ برای هرکدوم یه آزمایش کوچک بساز. مخصوصاً conflict رو عمداً ایجاد کن تا علامت‌های `<<<<<<<` و `>>>>>>>` رو با دست حل کنی.
 
-## B) گریت — روی همون گیت
-**۱) بالا آوردن با داکر.** اولین کاربری که لاگین کنه، ادمین می‌شه. برای اینکه پروژه‌ها و هوک‌هات با ری‌استارت نپرن، داده رو روی volume نگه‌دار:
-
-```gerrit
-$ docker run -d --name gerrit \
-    -p 8080:8080 -p 29418:29418 \
-    -v gerrit-git:/var/gerrit/git \
-    -v gerrit-index:/var/gerrit/index \
-    -v gerrit-cache:/var/gerrit/cache \
-    gerritcodereview/gerrit
+```تمرین عملیات
+$ git commit --amend --no-edit
+$ git rebase -i HEAD~3
+$ git reset --soft HEAD~1
+$ git revert <commit-id>
 ```
 
-> ▲ بدون این `-v`ها، اگه کانتینر ری‌استارت شه وسطِ کار، پروژه‌ها و هوکِ commit-msg می‌پرن و باید از اول شروع کنی. چند دقیقه صبر کن تا پیام «Gerrit Code Review NNN ready» بیاد، بعد برو `http://localhost:8080`.
+> ◎ در حد آشنایی، GitHub Flow و GitLab Flow رو هم ببین: هر دو معمولاً تغییر رو روی branch جدا می‌سازن و بعد وارد review/merge می‌کنن. توی Gerrit محورِ review مستقیماً **Change** و نسخه‌های مختلف همون تغییره.
 
-**۲) پروژه بساز، کلونش کن، و هوکِ `commit-msg` رو نصب کن.** این هوک همونیه که خودکار `Change-Id` رو ته پیام کامیت می‌ذاره (گریت موقع کلون دستور دقیقش رو نشونت می‌ده):
+## B) گریت — workflow رو در ویدئو ببین
+لازم نیست Gerrit رو نصب یا با Docker بالا بیاری. این بار به‌جای ساختن سرور، workflow واقعی رو در دو ویدئو می‌بینی و مراحلش رو به Git بخش قبل وصل می‌کنی.
 
-```commit-msg hook
-$ gitdir=$(git rev-parse --git-dir)
-$ curl -Lo $gitdir/hooks/commit-msg \
-    http://localhost:8080/tools/hooks/commit-msg
-$ chmod +x $gitdir/hooks/commit-msg
-```
+:::widget gerrit-videos
 
-**۳) تغییر بده، commit کن، و با push مخصوص گریت بفرست:**
+قبل از تماشا، مدل Change و Patch Set رو با این مقایسه روشن کن:
 
-```push for review
-$ git push origin HEAD:refs/for/master
-```
+:::widget gerrit-model
 
-چرا `refs/for/master` و نه `refs/heads/master`؟ چون داری می‌گی «این رو برای بازبینی روی برنچ master بفرست»، نه «مستقیم روی master بنشون». این قلبِ مدل گریته.
+هنگام دیدن ویدئوها، هر مرحله رو روی این مسیر پیدا کن. روی کارت‌ها بزن تا ببینی در Git چه اتفاقی می‌افته و Gerrit چه چیزی نشون می‌ده.
 
-**۴) توی UI:** یه reviewer اضافه کن، روی خطوط کد inline comment بذار، reply کن و بعضی‌ها رو Resolved علامت بزن.
+:::widget gerrit-workflow
 
-**۵) اینجا گیت به دادت می‌رسه:** کد رو اصلاح کن، `git commit --amend` بزن (به `Change-Id` دست نزن!)، دوباره push کن ← ببین **Patch Set 2** ساخته می‌شه، نه یه change جدید. توی UI می‌تونی Patch Set 1 و 2 رو با هم diff (interdiff) کنی.
+به این نکته‌ها دقت کن:
 
-**۶)** به‌عنوان ادمین بهش `+2` بده و Submit کن؛ ببین merge می‌شه.
+- push مخصوص review معمولاً به شکل `git push origin HEAD:refs/for/master` انجام می‌شه. `refs/for/master` یعنی «برای بازبینی روی master بفرست»، نه «مستقیم روی branch واقعی master بنویس».
+- موقع اصلاح، `git commit --amend` بزن و به `Change-Id` دست نزن. commit hash عوض می‌شه، ولی Gerrit با Change-Id ثابت می‌فهمه باید Patch Set جدید بسازه.
+- توی UI دنبال reviewer، inline comment، reply، وضعیت Resolved، مقایسه‌ی Patch Setها و Relation Chain بگرد.
+- Submit مرحله‌ایه که Change تأییدشده رو وارد branch مقصد می‌کنه؛ push اولیه فقط اون رو وارد صف review می‌کنه.
 
-> ◎ **تمرین اصلی:** یه change رو کامل از comment تا amend تا +2 و submit رد کن. **امتیازی:** دو change وابسته روی هم بساز (relation chain) و ببین گریت زنجیره‌ی وابستگی‌شون رو چطور نشون می‌ده — این دقیقاً همون تاریخچه‌ی خطیِ گیته که توی بخش A ساختی.
+> ◎ **تمرین اصلی:** بعد از دو ویدئو، workflow رو با زبان خودت بازنویسی کن و کنار هر مرحله بنویس در Git چه اتفاقی افتاده و در Gerrit چه چیزی دیده شده.
+
+> ◎ **تمرین امتیازی:** رابطه‌ی دو commit پشت‌سرهم رو با دو Change وابسته مقایسه کن. Relation Chain در Gerrit در اصل همون تاریخچه‌ی خطی Git رو نمایش می‌ده.
 
 ## خودت رو ارزیابی کن
-- اگه وسط کار `Change-Id` رو دستی از پیام کامیت پاک کنی و push کنی، گریت چی‌کار می‌کنه و چرا؟
-- فرقِ «یک change با ۳ patch set» و «۳ change جدا» چیه؟ کدوم رو `git commit --amend` می‌سازه و کدوم رو `git commit` جدید؟
-- چرا `refs/for/master` نه `refs/heads/master`؟ اگه اشتباهی دومی رو بزنی چه اتفاقی می‌افته؟
+- tracked چرا یک ناحیه مثل Staging نیست؟ یک فایل tracked در چه وضعیت‌هایی می‌تونه باشه؟
+- فرقِ local، remote و origin چیه؟ چرا origin فقط یه alias است؟
+- `git add` دقیقاً کدام نسخه از فایل را برای commit بعدی آماده می‌کند؟
+- `git switch` چه فرقی با `git checkout` داره؟
+- چرا `git commit --amend` commit hash رو عوض می‌کنه؟
+- فرقِ «یک Change با ۳ Patch Set» و «۳ Change جدا» چیه؟ کدوم رو amend می‌سازه و کدوم رو commit جدید؟
+- اگه `Change-Id` رو از پیام commit پاک یا عوض کنی، چرا Gerrit ممکنه اصلاح رو ادامه‌ی Change قبلی ندونه؟
+- چرا `refs/for/master` نه `refs/heads/master`؟
+- فرق `+1` و `+2` چیه و Submit دقیقاً چه زمانی انجام می‌شه؟
 
 ## منابع
-- [راهنمای کاربر گریت (همین workflow)](https://gerrit-review.googlesource.com/Documentation/intro-user.html)
+- [ویدئوی Gerrit — بخش اول](https://www.youtube.com/watch?v=icmCXVJfC_k)
+- [ویدئوی Gerrit — بخش دوم](https://www.youtube.com/watch?v=OL7TldzyXtY)
+- [راهنمای کاربر گریت](https://gerrit-review.googlesource.com/Documentation/intro-user.html)
 - [بازی تعاملی branch/merge/rebase](https://learngitbranching.js.org)
 - [کتاب Pro Git (فارسی) — فصل‌های ۲ و ۳](https://git-scm.com/book/fa/v2)
-- [ایمیج رسمی گریت روی داکر](https://hub.docker.com/r/gerritcodereview/gerrit)
 
 === mission
 title: مأموریت سوم — بَش

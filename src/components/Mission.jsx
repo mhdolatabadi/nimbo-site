@@ -1,16 +1,50 @@
 import { useEffect, useRef, useState } from 'react';
 import { faDigits, fmtDate } from '../lib/time';
 import { LockedRing, OpenRing } from './MissionNode';
+import { MissionWidget } from './GitMissionVisuals';
+
+function MissionBody({ html }) {
+  const marker = /<div data-mission-widget=\"([a-z0-9-]+)\"><\/div>/gi;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = marker.exec(html)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(<div key={`html-${lastIndex}`} dangerouslySetInnerHTML={{ __html: html.slice(lastIndex, match.index) }} />);
+    }
+    parts.push(<MissionWidget key={`widget-${match.index}`} name={match[1]} />);
+    lastIndex = marker.lastIndex;
+  }
+
+  if (lastIndex < html.length) {
+    parts.push(<div key={`html-${lastIndex}`} dangerouslySetInnerHTML={{ __html: html.slice(lastIndex) }} />);
+  }
+
+  return parts;
+}
 
 export default function Mission({ mission, index, open, unlockAt, active, showCountdown, countdownLabel, nodeRef }) {
   const [expanded, setExpanded] = useState(false);
   const bodyRef = useRef(null);
+  const innerRef = useRef(null);
 
-  // معادلِ React برای `body.style.maxHeight = scrollHeight` در نسخه‌ی وانیلا — برای انیمیشنِ باز/بسته شدن لازم است.
+  // ارتفاع مأموریت با بازشدن ویجت‌های تعاملی همگام می‌ماند.
   useEffect(() => {
     const body = bodyRef.current;
-    if (!body) return;
-    body.style.maxHeight = expanded ? `${body.scrollHeight}px` : '0';
+    const inner = innerRef.current;
+    if (!body || !inner) return undefined;
+
+    const syncHeight = () => {
+      body.style.maxHeight = expanded ? `${inner.scrollHeight}px` : '0';
+    };
+
+    syncHeight();
+    if (!expanded || typeof ResizeObserver === 'undefined') return undefined;
+
+    const observer = new ResizeObserver(syncHeight);
+    observer.observe(inner);
+    return () => observer.disconnect();
   }, [expanded]);
 
   const timeTag = mission.time ? (
@@ -75,9 +109,9 @@ export default function Mission({ mission, index, open, unlockAt, active, showCo
           </svg>
         </button>
         <div className="m-body" ref={bodyRef}>
-          <div className="m-body-inner">
-            {/* محتوای این بخش از Markdown مأموریت (فایل src/content/phase0.md) در build-time کامپایل می‌شود؛ ورودی کاربر نیست. */}
-            <div dangerouslySetInnerHTML={{ __html: mission.body }} />
+          <div className="m-body-inner" ref={innerRef}>
+            {/* محتوای Markdown و ویجت‌های آموزشی در build-time ساخته می‌شوند؛ ورودی کاربر نیست. */}
+            <MissionBody html={mission.body} />
             {mission.check && (
               <div className="check">
                 <div className="check-h">

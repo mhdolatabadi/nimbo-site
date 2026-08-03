@@ -69,10 +69,16 @@ function mdBody(md) {
   const L = md.replace(/\r/g, '').split('\n');
   let out = '';
   let i = 0;
-  const isBlockStart = (s) => /^(```|>|##\s|[-*]\s|\d+[.)]\s)/.test(s);
+  const isBlockStart = (s) => /^(:::widget\s|```|>|##\s|[-*]\s|\d+[.)]\s)/.test(s);
   while (i < L.length) {
     let line = L[i];
     if (line.trim() === '') {
+      i++;
+      continue;
+    }
+    const widget = line.trim().match(/^:::widget\s+([a-z0-9-]+)$/i);
+    if (widget) {
+      out += `<div data-mission-widget="${esc(widget[1])}"></div>`;
       i++;
       continue;
     }
