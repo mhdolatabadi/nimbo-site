@@ -1,78 +1,166 @@
 === mission
 title: مأموریت صفرم — آماده‌سازی محیط
-tool: environment
+tool: environment · linux
 time: ~۱.۵ ساعت
-tag: محیط کارت باید لینوکسی باشه؛ ابزارها را نصب و تست دود بزن.
+tag: قبل از ابزارها، باید بدانی دقیقاً داخل کدام Linux Shell کار می‌کنی.
 ---
-کل ابزارهای این فاز و کل دوره توی دنیای واقعی روی لینوکس اجرا می‌شن. پس قبل از هر چیز باید یه شل لینوکسیِ درست داشته باشی — بقیه‌ی مأموریت‌ها همه روی همین سواره.
+کل ابزارهای این فاز روی لینوکس اجرا می‌شن. پس خروجی این مأموریت فقط «چند برنامه نصب شد» نیست؛ باید یه محیط لینوکسی مشخص، یه مسیر کاری مرتب و چند دستور پایه داشته باشی که زیر دستت روان باشن.
 
-- **لینوکس داری؟** همین رو استفاده کن. اگه نه، یه توزیع مثل Ubuntu رو کنار ویندوز `dual-boot` کن یا داخل ماشین مجازی (VirtualBox / VMware) بالا بیار.
-- **ویندوز + WSL2:** حتماً از Windows Subsystem for Linux استفاده کن — نه CMD، نه PowerShell، نه Git Bash. یه Ubuntu روی WSL نصب کن و همه‌ی کارها رو داخل همون ترمینال انجام بده. Docker Desktop رو هم نصب کن و تیک «WSL2 integration» رو بزن.
+:::widget environment-path
 
-> ⚑ قانون فاز: هر دستوری که این‌جا می‌بینی باید داخل یه شل لینوکسی اجرا شه — لینوکس واقعی یا Ubuntu روی WSL2. روی macOS هم اکثر چیزها یکیه (فقط جای `apt` می‌شه `brew`).
+اگه روی Windows هستی، نصب WSL2 رو از PowerShell با دسترسی Administrator شروع کن؛ بعد از نصب، ادامه‌ی مأموریت داخل Ubuntu انجام می‌شه.
 
-```PowerShell (Admin)
+```PowerShell — فقط برای نصب WSL
 > wsl --install
 ```
 
-بعد ری‌استارت کن، Ubuntu از منوی استارت باز می‌شه، یوزرنیم/پسورد بساز. حالا این‌ها رو نصب کن: `Git` · `Docker` · `JDK 17` · Editor (ترجیحاً IntelliJ).
+بعد از restart، Ubuntu رو باز کن و username/password بساز. از این‌جا به بعد prompt تو باید شبیه یک Shell لینوکسی باشه، نه `C:\...>`.
 
-> ◎ نسخه‌ی JDK رو با نسخه‌ی پروژه‌ی واقعیِ دوره یکی نگه‌دار (این‌جا فرض ۱۷). اگه دوره نسخه‌ی دیگه‌ای می‌خواد، همه‌جای این فاز رو همون بذار تا بعداً سردرگم نشی.
+## ۱) قبل از نصب ابزارها، با فایل‌سیستم آشنا شو
 
-حالا تست دود را داخل شل لینوکسی‌ت بزن — هر چهار تا باید بدون خطا جواب بدن:
+دستورهای `pwd`، `ls`، `mkdir`، `cd`، `touch`، `cat`، `nano`، `rm` و `sudo` پایه‌ی همه‌ی مأموریت‌های بعدی‌اند. این‌ها رو از حالت فهرست حفظی خارج کن:
 
-```smoke test
-$ docker run hello-world
-$ docker compose version
-$ git --version
-$ java -version
+:::widget linux-shell-lab
+
+حالا یک workspace واقعی بساز و مسیر را با دست خودت طی کن:
+
+```تمرین فایل‌سیستم
+$ mkdir -p ~/nimbo/phase0
+$ cd ~/nimbo/phase0
+$ pwd
+$ touch notes.txt
+$ echo "phase zero ready" > notes.txt
+$ cat notes.txt
+$ ls -la
 ```
 
+> ▲ `rm` سطل بازیافت نداره و `sudo` سطح دسترسی رو بالا می‌بره. هیچ‌کدوم رو بدون فهمیدن مسیر و دستور اجرا نکن.
+
+## ۲) ابزارهای دوره رو نصب و مسیر اجرای اون‌ها رو تست کن
+
+این ابزارها باید داخل همون محیط لینوکسی در دسترس باشن: `Git`، `Docker`، `Docker Compose`، `JDK 17` و یک Editor یا IDE. روی Windows، Docker Desktop باید WSL2 integration رو برای Ubuntu فعال کرده باشه.
+
+> ◎ نسخه‌ی JDK رو با پروژه‌ی واقعی دوره یکی نگه‌دار. این فاز `17` رو فرض می‌کنه؛ اگه پروژه نسخه‌ی دیگه‌ای داره، همه‌جا همون نسخه رو استفاده کن.
+
+:::widget tool-smoke-test
+
+هر تست رو واقعاً در Shell اجرا کن. فقط دیدن شماره‌ی نسخه کافی نیست؛ خروجی باید نشون بده ابزار از همین محیط قابل دسترسیه و مسیر ساده‌ی اجرای اون سالمه.
+
+## خروجی مأموریت
+
+- یک Shell لینوکسی مشخص داری و می‌تونی توضیح بدی Linux واقعی، WSL2 و VM چه فرقی دارن.
+- workspace دوره در `~/nimbo` ساخته شده.
+- دستورهای پایه‌ی فایل‌سیستم رو روی فایل آزمایشی اجرا کردی.
+- چهار smoke test بدون خطا اجرا شدن و نسخه‌ی Java با پروژه هماهنگه.
+
 ## خودت رو ارزیابی کن
-- چرا اصرار داریم همه‌چی داخل شل لینوکسی (WSL2) اجرا شه نه PowerShell؟ فردا که اسکریپت نصب می‌نویسی این چه فرقی می‌ذاره؟
-- `docker run hello-world` دقیقاً چی‌کار کرد و اون image از کجا اومد؟
+- چرا بعد از نصب WSL، دستورهای دوره رو داخل Ubuntu اجرا می‌کنیم نه PowerShell یا Git Bash؟
+- فرق `pwd`، `ls` و `cd` چیه؟ هرکدوم درباره‌ی مسیر چه اطلاعات یا تغییری ایجاد می‌کنه؟
+- `touch` چه‌کار می‌کنه و `cat` چه‌کار می‌کنه؟
+- چرا باید قبل از `rm` و مخصوصاً قبل از `sudo rm` مسیر فعلی رو با `pwd` چک کنی؟
+- `docker run hello-world` فقط وجود command داکر رو تست می‌کنه یا ارتباط CLI، engine، registry و container runtime رو هم درگیر می‌کنه؟
+- چرا برای اطمینان از نصب JDK، دیدن `javac -version` از `java -version` کامل‌تره؟
 
 ## منابع
-- [راهنمای رسمی WSL](https://learn.microsoft.com/windows/wsl/install)
+- [راهنمای رسمی نصب WSL](https://learn.microsoft.com/windows/wsl/install)
+- [آموزش خط فرمان Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners)
+- [راهنمای رسمی نصب Docker Engine](https://docs.docker.com/engine/install/)
 
 === mission
 title: مأموریت اول — داکِر
 tool: docker
 time: ~۲ ساعت
-tag: تفاوت image و container رو بگیری، ۸۰٪ داکر رو گرفتی.
+tag: Image، Container، Layer، Network و Volume رو به‌عنوان یک سیستم ببین.
 ---
-- **image** یه «قالبِ فقط‌خواندنی» و ثابته (مثل کلاس).
-- **container** یه نمونه‌ی در حال اجرا از اون قالبه (مثل object).
+Docker فقط یه دستور برای «بالا آوردن برنامه» نیست. باید بفهمی از روی Dockerfile چطور image ساخته می‌شه، container چه چیزی به اون اضافه می‌کنه، cache کجا زمان build رو نجات می‌ده و Compose چطور چند سرویس رو به یک stack تبدیل می‌کنه.
 
-`Dockerfile` دستورالعمل ساختِ image و لایه‌لایه‌ست؛ داکر لایه‌ها رو cache می‌کنه — برای همین اگه فقط کد عوض شه، لایه‌های نصب وابستگی دوباره ساخته نمی‌شن.
+:::widget docker-mental-model
 
-**قدم‌به‌قدم:** یه Dockerfile چندمرحله‌ای (multi-stage) برای اپ جاوا بنویس — یه مرحله برای بیلد با Maven، یه مرحله‌ی سبک فقط برای اجرا تا ایمیج نهایی کوچیک بمونه:
+- **image** قالبی فقط‌خواندنی و لایه‌ایه که می‌تونی بارها از روش container بسازی.
+- **container** یک نمونه‌ی اجرایی با process و writable layer خودشه.
+- حذف container الزاماً image رو حذف نمی‌کنه؛ همون image می‌تونه نمونه‌ی تازه بسازه.
+
+## ۱) Dockerfile چندمرحله‌ای بساز
+
+برای پروژه‌ی Java، ابزار build نباید وارد image نهایی بشه. `pom.xml` رو قبل از source کپی کن تا وقتی فقط کد عوض می‌شه، لایه‌ی dependencyها از cache بیاد:
 
 ```Dockerfile
 FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY . .
-RUN mvn -q clean package
+COPY pom.xml .
+RUN mvn -q -B dependency:go-offline
+COPY src ./src
+RUN mvn -q -B package -DskipTests
 
 FROM eclipse-temurin:17-jre
+WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/app/app.jar"]
 ```
 
-می‌بینی که این‌جا از `mvn` استفاده کردیم؟ نگرانش نباش — میون رو مأموریت چهارم عمیق می‌شیم؛ فعلاً همین‌قدر که بدونی `mvn package` یه jar از پروژه می‌سازه کافیه.
+:::widget docker-layer-explorer
 
-بعد با `compose` یه استک بالا بیار (همون شکل سحابینو: اپ + Kafka + Postgres). داخل کانتینر برو (`docker exec -it <name> bash`)، شبکه رو `docker network inspect` کن، و یه `healthcheck` اضافه کن.
+حالا image رو بساز و lifecycle یک container رو واقعاً اجرا کن:
 
-> ◎ **تمرین اصلی:** `docker compose up` که کار کنه؛ و بتونی توضیح بدی چرا multi-stage ایمیج رو کوچیک کرد و چطور layer cache یه rebuild رو سریع کرد.
+```build & run
+$ docker build -t nimbo-app:1 .
+$ docker image ls
+$ docker run -d --name nimbo-app -p 8080:8080 nimbo-app:1
+$ docker ps
+$ docker logs -f nimbo-app
+$ docker exec -it nimbo-app sh
+$ docker stop nimbo-app
+$ docker rm nimbo-app
+```
+
+> ◎ `docker run` یک container تازه می‌سازه و process اصلیش رو اجرا می‌کنه؛ `docker exec` داخل یک container در حال اجرا، process تازه‌ای مثل `sh` باز می‌کنه.
+
+## ۲) با Compose یک stack بساز
+
+استک تمرین شامل `app + Kafka + Postgres` باشه. تنظیمات سرویس‌ها رو در `compose.yaml` نگه‌دار و برای داده‌های stateful از volume استفاده کن.
+
+:::widget docker-compose-map
+
+مسیر بررسی stack:
+
+```compose workflow
+$ docker compose up -d --build
+$ docker compose ps
+$ docker compose logs -f app
+$ docker compose exec app sh
+$ docker network ls
+$ docker network inspect <project>_default
+$ docker volume ls
+$ docker compose down
+```
+
+داخل container اپ بررسی کن که سرویس‌ها با hostnameهای Compose پیدا می‌شن؛ مثلاً `postgres:5432` و `kafka:9092`. برای Postgres و Kafka volume پایدار بذار و حداقل برای سرویس‌هایی که startup زمان‌بر دارن healthcheck تعریف کن.
+
+> ▲ `docker compose down` containerها و network پیش‌فرض رو حذف می‌کنه، اما named volumeها رو نگه می‌داره. `docker compose down -v` داده‌ی volumeها رو هم پاک می‌کنه.
+
+## تمرین اصلی
+
+1. image پروژه رو دو بار build کن؛ بار دوم فقط یک خط source رو تغییر بده و logهای `CACHED` و rebuild رو مقایسه کن.
+2. container اپ رو run، stop و remove کن و بعد ثابت کن image هنوز وجود داره.
+3. stack سه‌سرویسی رو با Compose بالا بیار و وضعیت health هر سرویس رو در `docker compose ps` ببین.
+4. داخل container اپ برو و اتصال شبکه‌ای به Postgres و Kafka رو با hostname سرویس‌ها بررسی کن.
+5. stack رو recreate کن و مطمئن شو داده‌ی volume باقی مونده.
 
 ## خودت رو ارزیابی کن
-- چرا multi-stage ایمیج نهایی رو کوچیک کرد؟ چی توی مرحله‌ی build هست که توی ایمیج نهایی نیست؟
-- اگه فقط یه خط کد عوض شه، کدوم لایه‌های Dockerfile دوباره ساخته می‌شن و کدوم از cache میان؟
-- فرق `docker run` و `docker exec` چیه؟
+- فرق image و container فقط «کلاس و object» است یا از نظر read-only layer، writable layer و process هم می‌تونی توضیحش بدی؟
+- چرا مرحله‌ی build شامل Maven و source است، ولی image نهایی فقط JRE و jar را نگه می‌دارد؟
+- اگر فقط فایل source عوض شود، چرا لایه‌ی `dependency:go-offline` می‌تواند از cache بیاید؟
+- اگر `pom.xml` عوض شود، کدام لایه‌ها باید دوباره ساخته شوند و چرا؟
+- فرق `docker build`، `docker run` و `docker exec` چیست؟
+- Compose network چه مشکلی را حل می‌کند و چرا داخل app به‌جای `localhost` از hostname سرویس استفاده می‌کنی؟
+- volume چه تفاوتی با writable layer خود container دارد؟
+- running بودن container با healthy بودن سرویس چه فرقی دارد؟
 
 ## منابع
-- [«Get started» رسمی داکر](https://docs.docker.com/get-started/)
-- [محیط تمرین آنلاین (بدون نصب)](https://labs.play-with-docker.com)
+- [Get started رسمی Docker](https://docs.docker.com/get-started/)
+- [راهنمای Dockerfile و build cache](https://docs.docker.com/build/cache/)
+- [راهنمای رسمی Docker Compose](https://docs.docker.com/compose/)
+- [محیط تمرین آنلاین Play with Docker](https://labs.play-with-docker.com)
 
 === mission
 title: مأموریت دوم — گریت و گیت

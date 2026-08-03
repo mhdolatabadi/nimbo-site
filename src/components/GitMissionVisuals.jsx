@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { FOUNDATION_WIDGETS } from './FoundationMissionVisuals';
 
 function FileIcon() {
   return (
@@ -375,6 +376,7 @@ export function GerritWorkflow() {
 }
 
 const WIDGETS = {
+  ...FOUNDATION_WIDGETS,
   'git-file-flow': GitFileFlow,
   'git-repo-map': GitRepositoryMap,
   'git-operations': GitOperationCards,
