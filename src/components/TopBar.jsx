@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
 
+// نقشه‌ی راه و ارائه‌های یکشنبه فعلاً مخفی‌اند؛ برای بازگرداندن، این دو خط را از کامنت خارج کن.
 const LINKS = [
-  { to: '/', label: 'نقشه‌ی راه', end: true },
+  // { to: '/', label: 'نقشه‌ی راه', end: true },
   { to: '/phase-0', label: 'فاز صفر' },
-  { to: '/talks', label: 'ارائه‌های یکشنبه' },
+  // { to: '/talks', label: 'ارائه‌های یکشنبه' },
 ];
 
 export default function TopBar() {
