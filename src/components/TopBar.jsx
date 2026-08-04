@@ -1,8 +1,16 @@
+import { NavLink } from 'react-router-dom';
+
+const LINKS = [
+  { to: '/', label: 'نقشه‌ی راه', end: true },
+  { to: '/phase-0', label: 'فاز صفر' },
+  { to: '/talks', label: 'ارائه‌های یکشنبه' },
+];
+
 export default function TopBar() {
   return (
     <header className="topbar">
       <div className="wrap">
-        <div className="brand">
+        <NavLink to="/" className="brand">
           <svg className="nimbo-ring" viewBox="0 0 40 40" aria-hidden="true">
             <path d="M8 12 A16 16 0 0 1 32 12" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" />
             <path d="M8 28 A16 16 0 0 0 32 28" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" />
@@ -10,13 +18,15 @@ export default function TopBar() {
           </svg>
           <div>
             <div className="lockup">Nimbo</div>
-            <div className="sub">مسیر آموزشی · فاز صفر</div>
+            <div className="sub">مسیر آموزشی</div>
           </div>
-        </div>
+        </NavLink>
         <nav className="mainnav">
-          <a href="#top" className="active" aria-current="page">فاز صفر</a>
-          <a href="#briefing">بریفینگ</a>
-          <a href="#timeline">مأموریت‌ها</a>
+          {LINKS.map((l) => (
+            <NavLink key={l.to} to={l.to} end={l.end} className={({ isActive }) => (isActive ? 'active' : '')}>
+              {l.label}
+            </NavLink>
+          ))}
         </nav>
       </div>
     </header>

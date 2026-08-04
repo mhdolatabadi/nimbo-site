@@ -26,7 +26,7 @@ h2.sec-title{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;letter-spacing:-
 /* top bar + nav */
 .topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:linear-gradient(180deg, rgba(26,10,46,.92), rgba(26,10,46,.6));border-bottom:1px solid var(--line)}
 .topbar .wrap{display:flex;align-items:center;gap:18px;height:66px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:700;flex:0 0 auto}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;flex:0 0 auto;text-decoration:none}
 .brand .lockup{font-size:1.15rem;letter-spacing:.5px;color:var(--gold)}
 .brand .sub{font-size:.72rem;color:var(--lav);font-weight:400}
 .nimbo-ring{width:34px;height:34px;flex:0 0 auto}
@@ -156,6 +156,50 @@ footer p{color:var(--lav-dim);font-size:.82rem;margin-top:14px}
   .m-state .lbl{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}.hero .bigring{animation:none}}
+
+/* roadmap grid (home) */
+.roadmap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.week-card{display:flex;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;position:relative;overflow:hidden;transition:transform .22s,border-color .22s}
+.week-card:hover{transform:translateY(-2px);border-color:var(--line-strong)}
+.week-card::before{content:"";position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(var(--lav-dim),transparent)}
+.week-card.status-current::before{background:linear-gradient(var(--gold),transparent)}
+.week-card.status-completed::before{background:linear-gradient(var(--ok),transparent)}
+.week-card.status-locked{opacity:.72}
+.wk-num{font-size:.7rem;letter-spacing:2px;color:var(--lav-dim)}
+.wk-status{align-self:flex-start;font-size:.7rem;padding:2px 9px;border-radius:999px;border:1px solid var(--line-strong);color:var(--lav)}
+.wk-status.current{color:var(--gold-lit);border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.1)}
+.wk-status.completed{color:var(--ok);border-color:rgba(124,224,163,.35);background:rgba(124,224,163,.08)}
+.wk-status.locked{color:var(--lav-dim)}
+.wk-title{font-size:1.1rem;font-weight:700;color:var(--ink)}
+.wk-desc{font-size:.86rem;color:var(--lav);line-height:1.7}
+
+/* weekly cadence explainer (home + week page + talks) */
+.rhythm-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.rhythm-card{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.rhythm-icon{font-size:1.4rem}
+.rhythm-day{font-size:.72rem;color:var(--gold);letter-spacing:1px}
+.rhythm-label{font-weight:700;color:var(--ink);font-size:.96rem}
+.rhythm-hint{font-size:.84rem;color:var(--lav);line-height:1.7}
+.format-card .rhythm-day{color:var(--purple-glow);font-size:1.3rem;letter-spacing:0}
+@media (max-width:900px){.rhythm-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.rhythm-grid{grid-template-columns:1fr}}
+
+/* sunday talks schedule list */
+.talk-list{display:flex;flex-direction:column;gap:10px}
+.talk-card{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;transition:border-color .2s}
+.talk-card:hover{border-color:var(--line-strong)}
+.talk-card.locked{opacity:.65}
+.talk-week{font-size:.78rem;color:var(--gold);min-width:88px}
+.talk-date{font-size:.82rem;color:var(--lav-dim);min-width:90px}
+.talk-topic{flex:1;color:var(--ink);font-size:.94rem;min-width:200px}
+.talk-topic.locked{color:var(--lav-dim)}
+
+/* week page prev/next nav */
+.week-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.week-nav-link{color:var(--lav);text-decoration:none;font-size:.92rem;padding:9px 16px;border:1px solid var(--line);border-radius:10px;transition:color .2s,border-color .2s}
+.week-nav-link:hover{color:var(--ink);border-color:var(--line-strong)}
+.week-nav-link.center{color:var(--gold-lit)}
+.week-nav-link.disabled{color:var(--lav-dim);pointer-events:none}
 
 /* visual learning blocks — Git / Gerrit */
 .concept-panel{position:relative;margin:22px 0 28px;padding:22px;direction:rtl;text-align:right;border:1px solid rgba(182,154,214,.22);border-radius:18px;background:linear-gradient(145deg,rgba(55,25,106,.72),rgba(34,16,59,.9));box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 22px 50px -34px rgba(0,0,0,.9);overflow:hidden}
