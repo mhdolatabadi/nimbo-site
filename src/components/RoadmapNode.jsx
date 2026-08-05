@@ -1,18 +1,33 @@
 import { faDigits } from '../lib/time';
 import { ROADMAP_TEXT } from '../content/bootcamp';
+import { CheckIcon, LockIcon, SparkIcon } from './icons';
 
 export const PANEL_ID = 'roadmap-panel';
 
 function Glyph({ status, id }) {
-  if (status === 'locked') return <span className="rp-glyph">🔒</span>;
-  if (status === 'completed') return <span className="rp-glyph">✓</span>;
+  if (status === 'locked') return <LockIcon size={17} />;
+  if (status === 'completed') return <CheckIcon size={18} />;
   return <span className="rp-glyph tnum">{faDigits(id)}</span>;
 }
 
-export default function RoadmapNode({ week, selected, hasChallenge, connector, onSelect }) {
+function Badge({ state }) {
+  if (!state) return null;
+  const label = state === 'released' ? ROADMAP_TEXT.challengeBadge : ROADMAP_TEXT.challengeSealedBadge;
+  return (
+    <>
+      <span className={`rp-badge ${state}`} aria-hidden="true">
+        {state === 'released' ? <SparkIcon size={11} /> : <span className="rp-badge-seal" />}
+      </span>
+      <span className="rp-sr">{label}</span>
+    </>
+  );
+}
+
+export default function RoadmapNode({ week, selected, challenge, connector, onSelect }) {
   const locked = week.status === 'locked';
   const classes = ['rp-item', `track-${week.track}`, `status-${week.status}`];
   if (selected) classes.push('selected');
+  if (challenge) classes.push(`challenge-${challenge}`);
 
   return (
     <li className={classes.join(' ')}>
@@ -33,23 +48,21 @@ export default function RoadmapNode({ week, selected, hasChallenge, connector, o
         onClick={locked ? undefined : () => onSelect(week)}
       >
         <span className="rp-ring">
+          {/* the Nimbo ring motif, same two arcs the brand mark uses */}
           <svg viewBox="0 0 48 48" aria-hidden="true">
-            <path d="M10 16 A16 16 0 0 1 38 16" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
-            <path d="M10 32 A16 16 0 0 0 38 32" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
-            <circle className="rp-ring-accent" cx="24" cy="24" r="15" fill="none" strokeWidth="2" />
+            <path className="rp-arc" d="M10 16 A16 16 0 0 1 38 16" fill="none" strokeWidth="2.2" strokeLinecap="round" />
+            <path className="rp-arc" d="M10 32 A16 16 0 0 0 38 32" fill="none" strokeWidth="2.2" strokeLinecap="round" />
+            <circle className="rp-ring-accent" cx="24" cy="24" r="15" fill="none" strokeWidth="1.8" />
           </svg>
-          <Glyph status={week.status} id={week.id} />
-          {hasChallenge && (
-            <span className="rp-badge" aria-hidden="true">
-              ⚡
-            </span>
-          )}
+          <span className="rp-mark">
+            <Glyph status={week.status} id={week.id} />
+          </span>
+          <Badge state={challenge} />
         </span>
         <span className="rp-code mono">{week.code}</span>
         <span className="rp-title">{week.title}</span>
         {week.summary && <span className="rp-summary">{week.summary}</span>}
         <span className="rp-state">{ROADMAP_TEXT.statusLabel[week.status]}</span>
-        {hasChallenge && <span className="rp-sr">{ROADMAP_TEXT.challengeBadge}</span>}
       </button>
     </li>
   );

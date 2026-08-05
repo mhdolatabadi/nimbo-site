@@ -26,7 +26,11 @@ export default function RoadmapPage() {
 
       <div className="divider" />
 
-      <Roadmap />
+      <section className="block" id="roadmap">
+        <div className="wrap">
+          <Roadmap />
+        </div>
+      </section>
     </>
   );
 }
