@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Phase0 from './pages/Phase0';
 import WeekPage from './pages/WeekPage';
 import RoadmapPage from './pages/RoadmapPage';
+import AdminPage from './pages/AdminPage';
 // import TalksPage from './pages/TalksPage';
 
 function ScrollToTop() {
@@ -32,6 +33,8 @@ export default function App() {
         <Route path="/roadmap" element={<RoadmapPage />} />
         <Route path="/roadmap/:weekSlug" element={<RoadmapPage />} />
         <Route path="/week/:n" element={<WeekPage />} />
+        {/* عمداً در منو نیست: فقط با آدرس مستقیم باز می‌شود. */}
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/talks" element={<Navigate to="/phase-0" replace />} />
         {/* <Route path="/talks" element={<TalksPage />} /> */}
         <Route path="*" element={<Navigate to="/phase-0" replace />} />

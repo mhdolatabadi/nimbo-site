@@ -1,42 +1,13 @@
-import { fmtDate } from '../lib/time';
-import { ROADMAP_TEXT, TRACKS, releasedChallenges } from '../content/bootcamp';
+import { ROADMAP_TEXT, TRACKS, weekChallenges } from '../content/bootcamp';
+import { toolLogo } from '../content/toolLogos';
+import ChallengeVault from './ChallengeVault';
+import { ToolLogo } from './icons';
 import { PANEL_ID } from './RoadmapNode';
 
 const TITLE_ID = 'roadmap-panel-title';
 
-function isoDate(iso) {
-  return new Date(`${iso}T00:00:00`);
-}
-
-function ChallengeCard({ challenge }) {
-  const t = ROADMAP_TEXT.panel;
-  return (
-    <article className="rp-challenge">
-      <div className="rp-challenge-head">
-        <span className="rp-challenge-kicker">⚡ {t.challengeKicker}</span>
-        <span className="rp-challenge-meta">
-          {challenge.releasedAt && (
-            <span className="tnum">
-              {t.releasedAt} {fmtDate(isoDate(challenge.releasedAt))}
-            </span>
-          )}
-          {challenge.deadline && (
-            <span className="tnum">
-              {t.deadline}: {fmtDate(isoDate(challenge.deadline))}
-            </span>
-          )}
-        </span>
-      </div>
-      {challenge.title && <h4 className="rp-challenge-title">{challenge.title}</h4>}
-      <p className="rp-challenge-applied">{t.challengeApplied}</p>
-      {challenge.body && <p className="rp-challenge-body">{challenge.body}</p>}
-    </article>
-  );
-}
-
 export default function MissionPanel({ week, panelRef, onClose }) {
   const t = ROADMAP_TEXT.panel;
-  const challenges = releasedChallenges(week);
   const track = TRACKS[week.track];
 
   return (
@@ -47,9 +18,7 @@ export default function MissionPanel({ week, panelRef, onClose }) {
       tabIndex={-1}
       aria-labelledby={TITLE_ID}
     >
-      {challenges.map((c) => (
-        <ChallengeCard key={c.id} challenge={c} />
-      ))}
+      <ChallengeVault challenges={weekChallenges(week)} />
 
       <header className="rp-panel-head">
         <div className="rp-panel-titles">
@@ -69,7 +38,8 @@ export default function MissionPanel({ week, panelRef, onClose }) {
       {week.stack?.length > 0 && (
         <div className="rp-chips">
           {week.stack.map((s) => (
-            <span key={s} className="chip tool">
+            <span key={s} className="chip tool rp-tool">
+              <ToolLogo logo={toolLogo(s)} />
               {s}
             </span>
           ))}
