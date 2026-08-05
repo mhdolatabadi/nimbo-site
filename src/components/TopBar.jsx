@@ -1,9 +1,11 @@
 import { NavLink } from 'react-router-dom';
+import { ROADMAP_TEXT } from '../content/bootcamp';
 
 // نقشه‌ی راه و ارائه‌های یکشنبه فعلاً مخفی‌اند؛ برای بازگرداندن، این دو خط را از کامنت خارج کن.
 const LINKS = [
   // { to: '/', label: 'نقشه‌ی راه', end: true },
   { to: '/phase-0', label: 'فاز صفر' },
+  { to: '/roadmap', label: ROADMAP_TEXT.navLabel },
   // { to: '/talks', label: 'ارائه‌های یکشنبه' },
 ];
 
