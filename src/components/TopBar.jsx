@@ -1,13 +1,21 @@
 import { NavLink } from 'react-router-dom';
+import { ROADMAP_TEXT } from '../content/bootcamp';
+import { ADMIN_TEXT } from '../content/admin';
+import { useAdminSession } from '../hooks/useAdminSession';
 
 // نقشه‌ی راه و ارائه‌های یکشنبه فعلاً مخفی‌اند؛ برای بازگرداندن، این دو خط را از کامنت خارج کن.
 const LINKS = [
   // { to: '/', label: 'نقشه‌ی راه', end: true },
   { to: '/phase-0', label: 'فاز صفر' },
+  { to: '/roadmap', label: ROADMAP_TEXT.navLabel },
   // { to: '/talks', label: 'ارائه‌های یکشنبه' },
 ];
 
 export default function TopBar() {
+  // The console's tab only appears once someone is signed in to it.
+  const [adminOpen] = useAdminSession();
+  const links = adminOpen ? [...LINKS, { to: '/admin', label: ADMIN_TEXT.navLabel }] : LINKS;
+
   return (
     <header className="topbar">
       <div className="wrap">
@@ -23,7 +31,7 @@ export default function TopBar() {
           </div>
         </NavLink>
         <nav className="mainnav">
-          {LINKS.map((l) => (
+          {links.map((l) => (
             <NavLink key={l.to} to={l.to} end={l.end} className={({ isActive }) => (isActive ? 'active' : '')}>
               {l.label}
             </NavLink>

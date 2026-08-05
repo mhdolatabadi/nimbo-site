@@ -1,0 +1,88 @@
+import { ROADMAP_TEXT, TRACKS, weekChallenges } from '../content/bootcamp';
+import { toolLogo } from '../content/toolLogos';
+import ChallengeVault from './ChallengeVault';
+import { ToolLogo } from './icons';
+import { PANEL_ID } from './RoadmapNode';
+
+const TITLE_ID = 'roadmap-panel-title';
+
+export default function MissionPanel({ week, panelRef, onClose }) {
+  const t = ROADMAP_TEXT.panel;
+  const track = TRACKS[week.track];
+
+  return (
+    <section
+      id={PANEL_ID}
+      className={`rp-panel track-${week.track}`}
+      ref={panelRef}
+      tabIndex={-1}
+      aria-labelledby={TITLE_ID}
+    >
+      <ChallengeVault challenges={weekChallenges(week)} />
+
+      <header className="rp-panel-head">
+        <div className="rp-panel-titles">
+          <span className="rp-panel-code mono">
+            {week.code}
+            {track && <> · {track.label}</>}
+          </span>
+          <h3 className="rp-panel-title" id={TITLE_ID}>
+            {week.title}
+          </h3>
+        </div>
+        <button type="button" className="rp-close" onClick={onClose}>
+          {t.close}
+        </button>
+      </header>
+
+      {week.stack?.length > 0 && (
+        <div className="rp-chips">
+          {week.stack.map((s) => (
+            <span key={s} className="chip tool rp-tool">
+              <ToolLogo logo={toolLogo(s)} />
+              {s}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {week.mission && (
+        <div className="rp-block">
+          <h4 className="rp-block-title">{t.mission}</h4>
+          <p>{week.mission}</p>
+        </div>
+      )}
+
+      {week.objectives?.length > 0 && (
+        <div className="rp-block">
+          <h4 className="rp-block-title">{t.objectives}</h4>
+          <ul className="rp-objectives">
+            {week.objectives.map((o) => (
+              <li key={o}>{o}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {week.deliverable && (
+        <div className="rp-deliverable">
+          <span className="rp-deliverable-label">{t.deliverable}</span>
+          <p>{week.deliverable}</p>
+        </div>
+      )}
+
+      {week.resources?.length > 0 && (
+        <div className="res">
+          <div className="res-title mono">{t.resources}</div>
+          {week.resources.map((r) => (
+            <a key={r.url} href={r.url} target="_blank" rel="noopener noreferrer">
+              <span className="arrow">↗</span>
+              <span>{r.label}</span>
+              <span className="u">{r.url.replace(/^https?:\/\//, '')}</span>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
