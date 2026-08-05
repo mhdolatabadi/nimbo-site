@@ -11,9 +11,13 @@
 // HOW TO RELEASE A TUESDAY CHALLENGE
 //   1. In that week's `challenges`, set the challenge's `status` to 'released'.
 //   2. Set `releasedAt` to the release date ('YYYY-MM-DD'), and `deadline` if there is one.
-//   3. Write the challenge text in `body`.
-//   A challenge with status 'draft' has no `body` — until it is released, its text
-//   does not exist in this file.
+//   3. Write the challenge's `title` and `body`.
+//   A challenge with status 'draft' carries nothing but `id` and `status` — no title, no
+//   body. The site shows it as a sealed slot and invents the noise on screen, so nothing
+//   about an unreleased challenge can be read out of the bundle.
+//
+// The admin console at /admin writes all of this for you: it produces the exact snippet
+// to paste here. Editing this file by hand does the same job.
 //
 // More than one week may be 'active' at the same time.
 
@@ -44,13 +48,18 @@ export const ROADMAP_TEXT = {
     active: 'باز',
     completed: 'تمام‌شده',
   },
-  weekWord: 'هفته‌ی',
   challengeBadge: 'چالش این هفته منتشر شده',
-  panel: {
-    challengeKicker: 'چالش این هفته',
-    challengeApplied: 'این تغییر روی پروژه‌ی شما اعمال شده است؛ حل کردنش با شماست.',
+  challengeSealedBadge: 'چالش این هفته هنوز مهروموم است',
+  vault: {
+    sealedLabel: 'چالش مهروموم‌شده',
+    sealedTitle: 'یک چیزی این‌جا هست',
+    sealedNote: 'چالش این هفته هنوز باز نشده. وقتی باز شود، خودش را نشان می‌دهد.',
+    releasedKicker: 'چالش باز شد',
     releasedAt: 'منتشر شده در',
     deadline: 'مهلت',
+    applied: 'این تغییر همین حالا روی پروژه‌ی شما اعمال شده است؛ حل کردنش با شماست.',
+  },
+  panel: {
     mission: 'مأموریت',
     objectives: 'چه چیزی سنجیده می‌شود',
     deliverable: 'تحویلیِ هفته',
@@ -79,7 +88,7 @@ export const weeks = [
     stack: ['Kafka', 'HDFS', 'Parquet', 'Docker', 'Docker Compose', 'Jenkins'],
     deliverable:
       'جریان زنده‌ی داده از کافکا تا Parquet روی HDFS — کاملاً کانتینری، بالاآمدنی روی یک ماشین تمیز، و به‌روزشونده با یک پوش به برنچ اصلی. هر تصمیم فنی باید قابل دفاع باشد.',
-    challenges: [],
+    challenges: [{ id: 'w1-c1', status: 'draft' }],
   },
   { id: 2, code: 'W2', status: 'locked', track: 'build', title: 'پردازش و اولین خط CI/CD' },
   { id: 3, code: 'W3', status: 'locked', track: 'build', title: 'کیفیت کد و کانفیگ متمرکز' },
@@ -91,6 +100,13 @@ export const weeks = [
   { id: 9, code: 'W9', status: 'locked', track: 'prove', title: 'بازسازی از صفر و دفاع' },
 ];
 
-export function releasedChallenges(week) {
-  return (week.challenges ?? []).filter((c) => c.status === 'released');
+export function weekChallenges(week) {
+  return week.challenges ?? [];
+}
+
+// 'released' wins over 'sealed' so a week that already dropped its challenge reads as open.
+export function challengeState(week) {
+  const list = weekChallenges(week);
+  if (list.some((c) => c.status === 'released')) return 'released';
+  return list.length > 0 ? 'sealed' : null;
 }
