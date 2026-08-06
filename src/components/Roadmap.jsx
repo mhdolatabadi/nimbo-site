@@ -1,41 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ROADMAP_TEXT, TRACKS, weeks as publishedWeeks, challengeState } from '../content/bootcamp';
+import { PHASES, ROADMAP_TEXT, weeks, challengeState, isReadable } from '../content/bootcamp';
 import RoadmapNode from './RoadmapNode';
 import MissionPanel from './MissionPanel';
 
 const SLUG_PATTERN = /^week-(\d+)$/;
-const ROADMAP_PATH = '/roadmap';
 
-// A locked week has no addressable content, so its deep link falls back to the default state.
-function weekFromSlug(slug, weeks) {
+// A sealed week has no addressable content, so its deep link falls back to the default state.
+function weekFromSlug(slug) {
   const match = SLUG_PATTERN.exec(slug ?? '');
   if (!match) return null;
   const week = weeks.find((w) => w.id === Number(match[1]));
-  return week && week.status !== 'locked' ? week : null;
+  return week && isReadable(week) ? week : null;
 }
 
-// On the roadmap page the open week lives in the URL so it can be shared; inside the admin
-// console's preview it is local state, because that view is not a place you link to.
-function useSelectedWeek(weeks, routed) {
+export default function Roadmap({ basePath }) {
   const { weekSlug } = useParams();
   const navigate = useNavigate();
-  const [localId, setLocalId] = useState(null);
-
-  if (routed) {
-    const selected = weekFromSlug(weekSlug, weeks);
-    return [
-      selected,
-      (week) => navigate(week && week.id !== selected?.id ? `${ROADMAP_PATH}/week-${week.id}` : ROADMAP_PATH),
-    ];
-  }
-  const selected = weeks.find((w) => w.id === localId && w.status !== 'locked') ?? null;
-  return [selected, (week) => setLocalId(week && week.id !== localId ? week.id : null)];
-}
-
-export default function Roadmap({ weeks = publishedWeeks, routed = true, heading = true }) {
-  const [selected, select] = useSelectedWeek(weeks, routed);
   const panelRef = useRef(null);
+
+  const selected = weekFromSlug(weekSlug);
   const selectedId = selected?.id ?? null;
 
   useEffect(() => {
@@ -45,26 +29,26 @@ export default function Roadmap({ weeks = publishedWeeks, routed = true, heading
     panel.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
   }, [selectedId]);
 
+  function select(week) {
+    navigate(week.id === selectedId ? basePath : `${basePath}/week-${week.id}`);
+  }
+
   return (
     <>
-      {heading && (
-        <>
-          <div className="sec-head">
-            <span className="sec-kicker">{ROADMAP_TEXT.kicker}</span>
-            <h2 className="sec-title">{ROADMAP_TEXT.title}</h2>
-          </div>
-          <p className="sec-note" style={{ marginBottom: 26 }}>
-            {ROADMAP_TEXT.note}
-          </p>
-        </>
-      )}
+      <div className="sec-head">
+        <span className="sec-kicker">{ROADMAP_TEXT.kicker}</span>
+        <h2 className="sec-title">{ROADMAP_TEXT.title}</h2>
+      </div>
+      <p className="sec-note" style={{ marginBottom: 26 }}>
+        {ROADMAP_TEXT.note}
+      </p>
 
       <div className="rp-legend">
         <span className="rp-legend-title">{ROADMAP_TEXT.legendTitle}</span>
-        {Object.values(TRACKS).map((track) => (
-          <span key={track.id} className={`rp-legend-item track-${track.id}`}>
+        {Object.values(PHASES).map((phase) => (
+          <span key={phase.id} className={`rp-legend-item phase-${phase.id}`}>
             <i aria-hidden="true" />
-            {track.label}
+            {phase.label}
           </span>
         ))}
       </div>
@@ -78,7 +62,7 @@ export default function Roadmap({ weeks = publishedWeeks, routed = true, heading
               week={week}
               selected={week.id === selectedId}
               challenge={challengeState(week)}
-              connector={next ? { from: week.track, to: next.track } : null}
+              connector={next ? { from: week.phase, to: next.phase } : null}
               onSelect={select}
             />
           );
