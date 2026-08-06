@@ -10,6 +10,7 @@ import {
 } from '../content/architecture';
 
 function stateFor(item, week) {
+  if (item.given) return 'given';
   if (week < item.week) return 'future';
   if (week === item.week) return 'fresh';
   if (item.until && week <= item.until) return 'wip';
