@@ -1,51 +1,69 @@
-// The target architecture, laid out once and drawn at every week.
+// The system the teams are building, drawn once and replayed at every week.
 //
-// `week` is the week that builds the block. The map paints anything from earlier weeks as
-// already standing, the current week's blocks as new, and later weeks as ghosts — so each
-// week you see exactly which piece of the system just came alive.
+// The shape is the point: one topic that forks into two paths with different natures — a
+// direct one and a batch one — which meet again at the serving layer. Everything that is not
+// part of that story (build tooling, quality gates, delivery) belongs in the week's text, not
+// here.
 //
-// Coordinates are viewBox units (900 × 650). To add a block, place it in the free space of
-// its zone and give it the week that builds it; nothing else needs to change.
+// `week`  — the week the block starts existing.
+// `until` — the last week it is still being finished; between `week` and `until` it reads as
+//           work in progress rather than done. Leave it out for blocks that land at once.
+// `autoWeek` — the week this block stops being brought up by hand. The data layer goes first,
+//           the services after it, which is why weeks six and seven do not look alike.
+//
+// Coordinates are viewBox units (1120 × 420). Flow runs right to left.
 
 export const ARCH_TEXT = {
-  flowZone: 'جریان داده',
-  platformZone: 'بستر، تحویل و خودکارسازی',
+  lanes: {
+    direct: 'مسیر بلادرنگ',
+    batch: 'مسیر دسته‌ای',
+  },
+  cluster: 'کلاستر',
   legend: {
-    built: 'ساخته‌شده',
-    fresh: 'همین هفته',
-    future: 'هفته‌های بعد',
+    built: 'ایستاده',
+    fresh: 'این هفته',
+    wip: 'در جریان',
+    future: 'هنوز نه',
   },
 };
 
-const SPINE_X = 640;
-const SPINE_W = 230;
-const BOX_H = 66;
-
-// Right zone: the data path, flowing top to bottom.
-const spine = [
-  { id: 'source', label: 'منبع داده', sub: 'Producer', week: 1 },
-  { id: 'kafka', label: 'صف پیام', sub: 'Kafka', week: 1 },
-  { id: 'writer', label: 'سرویس نویسنده', sub: 'Consumer', week: 1 },
-  { id: 'storage', label: 'ذخیره‌ی خام', sub: 'HDFS · Parquet', week: 1 },
-  { id: 'process', label: 'پردازش', sub: 'Spark', week: 2 },
-  { id: 'curated', label: 'دادهٔ آماده', sub: 'Curated', week: 2 },
-  { id: 'api', label: 'سرویس بیرونی', sub: 'API', week: 4 },
-];
-
+// kind: 'source' pill, 'queue' partitioned bar, 'store' cylinder, 'service' block
 export const ARCH_NODES = [
-  ...spine.map((node, i) => ({ ...node, x: SPINE_X, y: 44 + i * 86, w: SPINE_W, h: BOX_H, zone: 'flow' })),
-  // Left zone: everything that carries, ships and rebuilds the data path.
-  { id: 'containers', label: 'کانتینرها', sub: 'Docker · Compose', week: 1, x: 330, y: 90, w: 260, h: 80, zone: 'platform' },
-  { id: 'cicd', label: 'خط تحویل', sub: 'Jenkins', week: 1, x: 40, y: 90, w: 260, h: 80, zone: 'platform' },
-  { id: 'quality', label: 'دروازهٔ کیفیت', sub: 'SonarQube', week: 3, x: 330, y: 230, w: 260, h: 80, zone: 'platform' },
-  { id: 'config', label: 'پیکربندی متمرکز', sub: 'Config', week: 3, x: 40, y: 230, w: 260, h: 80, zone: 'platform' },
-  { id: 'monitoring', label: 'پایش', sub: 'Prometheus · Grafana', week: 4, x: 330, y: 370, w: 260, h: 80, zone: 'platform' },
-  { id: 'cluster', label: 'کلاستر', sub: 'Kubernetes · Helm', week: 5, x: 40, y: 370, w: 260, h: 80, zone: 'platform' },
-  { id: 'dataAuto', label: 'اتوماسیون لایهٔ داده', sub: 'Ansible', week: 6, x: 330, y: 510, w: 260, h: 80, zone: 'platform' },
-  { id: 'appAuto', label: 'اتوماسیون پردازش', sub: 'Ansible · Helm', week: 7, x: 40, y: 510, w: 260, h: 80, zone: 'platform' },
+  { id: 'source', kind: 'source', label: 'رویداد', x: 1175, y: 178, w: 85, h: 50, week: 1 },
+  { id: 'kafka', kind: 'queue', label: 'تاپیک', sub: 'Kafka', x: 1010, y: 150, w: 145, h: 105, week: 1, autoWeek: 6 },
+
+  { id: 'srWriter', kind: 'service', label: 'نویسندهٔ بلادرنگ', sub: 'StarRocks Writer', x: 815, y: 60, w: 155, h: 78, week: 2, until: 3, lane: 'direct', autoWeek: 7 },
+  { id: 'starrocks', kind: 'store', label: 'انبار تحلیلی', sub: 'StarRocks', x: 620, y: 60, w: 155, h: 78, week: 2, until: 3, lane: 'direct', autoWeek: 6 },
+
+  { id: 'pqWriter', kind: 'service', label: 'نویسندهٔ خام', sub: 'Parquet Writer', x: 815, y: 285, w: 155, h: 78, week: 1, lane: 'batch', autoWeek: 7 },
+  { id: 'hdfs', kind: 'store', label: 'ذخیرهٔ خام', sub: 'HDFS · Parquet', x: 620, y: 285, w: 155, h: 78, week: 1, lane: 'batch', autoWeek: 6 },
+  { id: 'cube', kind: 'service', label: 'مکعب‌ساز', sub: 'Spark', x: 425, y: 285, w: 155, h: 78, week: 2, until: 3, lane: 'batch', autoWeek: 7 },
+  { id: 'postgres', kind: 'store', label: 'انبار تجمیعی', sub: 'PostgreSQL', x: 230, y: 285, w: 155, h: 78, week: 3, lane: 'batch', autoWeek: 6 },
+
+  { id: 'api', kind: 'service', label: 'سرویس بیرونی', sub: 'REST · دو مسیر', x: 40, y: 160, w: 150, h: 90, week: 4, autoWeek: 7 },
 ];
 
-// Each link belongs to the block it feeds, so it appears the week that block is built.
-export const ARCH_EDGES = spine.slice(1).map((node, i) => ({ from: spine[i].id, to: node.id, week: node.week }));
+export const ARCH_EDGES = [
+  { from: 'source', to: 'kafka', week: 1 },
+  { from: 'kafka', to: 'pqWriter', week: 1, lane: 'batch' },
+  { from: 'pqWriter', to: 'hdfs', week: 1, lane: 'batch' },
+  { from: 'kafka', to: 'srWriter', week: 2, lane: 'direct' },
+  { from: 'srWriter', to: 'starrocks', week: 2, until: 3, lane: 'direct' },
+  { from: 'hdfs', to: 'cube', week: 2, until: 3, lane: 'batch' },
+  { from: 'cube', to: 'postgres', week: 3, lane: 'batch' },
+  { from: 'starrocks', to: 'api', week: 4, lane: 'direct' },
+  { from: 'postgres', to: 'api', week: 4, lane: 'batch' },
+];
 
-export const ARCH_VIEWBOX = { width: 900, height: 650 };
+// From this week on the whole system lives inside a cluster. It adds no box — it changes what
+// the picture already shows. Automation arrives per block, through each block's `autoWeek`.
+export const ARCH_CLUSTER_WEEK = 5;
+
+export const ARCH_LANE_LABELS = [
+  { lane: 'direct', x: 966, y: 44 },
+  { lane: 'batch', x: 966, y: 382 },
+];
+
+export const ARCH_CLUSTER_BOX = { x: 24, y: 22, w: 1146, h: 378 };
+
+export const ARCH_VIEWBOX = { width: 1260, height: 420 };
