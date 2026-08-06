@@ -1,8 +1,13 @@
-import { ROADMAP_TEXT } from '../content/bootcamp';
+import { Navigate, useParams } from 'react-router-dom';
+import { ROADMAP_KEY, ROADMAP_TEXT } from '../content/bootcamp';
 import Roadmap from '../components/Roadmap';
 
 export default function RoadmapPage() {
+  const { key } = useParams();
   const hero = ROADMAP_TEXT.hero;
+
+  // Wrong key, or the bare old /roadmap address: there is nothing here.
+  if (key !== ROADMAP_KEY) return <Navigate to="/phase-0" replace />;
 
   return (
     <>
@@ -28,7 +33,7 @@ export default function RoadmapPage() {
 
       <section className="block" id="roadmap">
         <div className="wrap">
-          <Roadmap />
+          <Roadmap basePath={`/roadmap/${key}`} />
         </div>
       </section>
     </>
