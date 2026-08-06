@@ -1,5 +1,6 @@
 import { ROADMAP_TEXT, TRACKS, weekChallenges } from '../content/bootcamp';
 import { toolLogo } from '../content/toolLogos';
+import ArchitectureMap from './ArchitectureMap';
 import ChallengeVault from './ChallengeVault';
 import { ToolLogo } from './icons';
 import { PANEL_ID } from './RoadmapNode';
@@ -18,6 +19,8 @@ export default function MissionPanel({ week, panelRef, onClose }) {
       tabIndex={-1}
       aria-labelledby={TITLE_ID}
     >
+      {week.status === 'upcoming' && <p className="rp-ribbon">{ROADMAP_TEXT.upcomingRibbon}</p>}
+
       <ChallengeVault challenges={weekChallenges(week)} />
 
       <header className="rp-panel-head">
@@ -70,6 +73,11 @@ export default function MissionPanel({ week, panelRef, onClose }) {
           <p>{week.deliverable}</p>
         </div>
       )}
+
+      <div className="rp-block">
+        <h4 className="rp-block-title">{t.architecture}</h4>
+        <ArchitectureMap week={week.id} />
+      </div>
 
       {week.resources?.length > 0 && (
         <div className="res">

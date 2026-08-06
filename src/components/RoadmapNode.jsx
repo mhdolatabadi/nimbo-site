@@ -1,5 +1,5 @@
 import { faDigits } from '../lib/time';
-import { ROADMAP_TEXT } from '../content/bootcamp';
+import { ROADMAP_TEXT, isReadable } from '../content/bootcamp';
 import { CheckIcon, LockIcon, SparkIcon } from './icons';
 
 export const PANEL_ID = 'roadmap-panel';
@@ -24,10 +24,9 @@ function Badge({ state }) {
 }
 
 export default function RoadmapNode({ week, selected, challenge, connector, onSelect }) {
-  const locked = week.status === 'locked';
+  const sealed = !isReadable(week);
   const classes = ['rp-item', `track-${week.track}`, `status-${week.status}`];
   if (selected) classes.push('selected');
-  if (challenge) classes.push(`challenge-${challenge}`);
 
   return (
     <li className={classes.join(' ')}>
@@ -41,11 +40,11 @@ export default function RoadmapNode({ week, selected, challenge, connector, onSe
       <button
         type="button"
         className="rp-node"
-        aria-disabled={locked ? 'true' : undefined}
-        tabIndex={locked ? -1 : 0}
-        aria-expanded={locked ? undefined : selected}
-        aria-controls={locked ? undefined : PANEL_ID}
-        onClick={locked ? undefined : () => onSelect(week)}
+        aria-disabled={sealed ? 'true' : undefined}
+        tabIndex={sealed ? -1 : 0}
+        aria-expanded={sealed ? undefined : selected}
+        aria-controls={sealed ? undefined : PANEL_ID}
+        onClick={sealed ? undefined : () => onSelect(week)}
       >
         <span className="rp-ring">
           {/* the Nimbo ring motif, same two arcs the brand mark uses */}
