@@ -25,6 +25,15 @@ export function SparkIcon({ size = 16 }) {
   );
 }
 
+export function FlagIcon({ size = 16 }) {
+  return (
+    <svg className="ico" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 21V4.5" />
+      <path d="M6 5.2h9.6l-1.9 3.4 1.9 3.4H6" />
+    </svg>
+  );
+}
+
 export function ToolLogo({ logo, size = 14 }) {
   if (!logo) return null;
   return (

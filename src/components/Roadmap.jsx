@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ROADMAP_TEXT, TRACKS, weeks, challengeState, isReadable } from '../content/bootcamp';
+import { PHASES, ROADMAP_TEXT, weeks, challengeState, isReadable } from '../content/bootcamp';
 import RoadmapNode from './RoadmapNode';
 import MissionPanel from './MissionPanel';
 
@@ -45,10 +45,10 @@ export default function Roadmap({ basePath }) {
 
       <div className="rp-legend">
         <span className="rp-legend-title">{ROADMAP_TEXT.legendTitle}</span>
-        {Object.values(TRACKS).map((track) => (
-          <span key={track.id} className={`rp-legend-item track-${track.id}`}>
+        {Object.values(PHASES).map((phase) => (
+          <span key={phase.id} className={`rp-legend-item phase-${phase.id}`}>
             <i aria-hidden="true" />
-            {track.label}
+            {phase.label}
           </span>
         ))}
       </div>
@@ -62,7 +62,7 @@ export default function Roadmap({ basePath }) {
               week={week}
               selected={week.id === selectedId}
               challenge={challengeState(week)}
-              connector={next ? { from: week.track, to: next.track } : null}
+              connector={next ? { from: week.phase, to: next.phase } : null}
               onSelect={select}
             />
           );

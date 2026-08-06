@@ -1,6 +1,6 @@
 import { faDigits } from '../lib/time';
 import { ROADMAP_TEXT, isReadable } from '../content/bootcamp';
-import { CheckIcon, LockIcon, SparkIcon } from './icons';
+import { CheckIcon, FlagIcon, LockIcon, SparkIcon } from './icons';
 
 export const PANEL_ID = 'roadmap-panel';
 
@@ -25,7 +25,7 @@ function Badge({ state }) {
 
 export default function RoadmapNode({ week, selected, challenge, connector, onSelect }) {
   const sealed = !isReadable(week);
-  const classes = ['rp-item', `track-${week.track}`, `status-${week.status}`];
+  const classes = ['rp-item', `phase-${week.phase}`, `status-${week.status}`];
   if (selected) classes.push('selected');
 
   return (
@@ -34,7 +34,7 @@ export default function RoadmapNode({ week, selected, challenge, connector, onSe
         <span
           className="rp-connector"
           aria-hidden="true"
-          style={{ '--seg-from': `var(--track-${connector.from})`, '--seg-to': `var(--track-${connector.to})` }}
+          style={{ '--seg-from': `var(--phase-${connector.from})`, '--seg-to': `var(--phase-${connector.to})` }}
         />
       )}
       <button
@@ -57,6 +57,14 @@ export default function RoadmapNode({ week, selected, challenge, connector, onSe
             <Glyph status={week.status} id={week.id} />
           </span>
           <Badge state={challenge} />
+          {week.milestone && (
+            <>
+              <span className="rp-pin" aria-hidden="true">
+                <FlagIcon size={11} />
+              </span>
+              <span className="rp-sr">{week.milestone.title}</span>
+            </>
+          )}
         </span>
         <span className="rp-code mono">{week.code}</span>
         <span className="rp-title">{week.title}</span>

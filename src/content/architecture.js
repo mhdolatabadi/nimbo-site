@@ -5,6 +5,7 @@
 // part of that story (build tooling, quality gates, delivery) belongs in the week's text, not
 // here.
 //
+// `given`  — handed to the teams, not built by them: the records arrive on their topic.
 // `week`  — the week the block starts existing.
 // `until` — the last week it is still being finished; between `week` and `until` it reads as
 //           work in progress rather than done. Leave it out for blocks that land at once.
@@ -29,7 +30,7 @@ export const ARCH_TEXT = {
 
 // kind: 'source' pill, 'queue' partitioned bar, 'store' cylinder, 'service' block
 export const ARCH_NODES = [
-  { id: 'source', kind: 'source', label: 'رویداد', x: 1175, y: 178, w: 85, h: 50, week: 1 },
+  { id: 'source', kind: 'source', label: 'Netflow', sub: 'Avro', x: 1160, y: 172, w: 100, h: 62, week: 1, given: true },
   { id: 'kafka', kind: 'queue', label: 'تاپیک', sub: 'Kafka', x: 1010, y: 150, w: 145, h: 105, week: 1, autoWeek: 6 },
 
   { id: 'srWriter', kind: 'service', label: 'نویسندهٔ بلادرنگ', sub: 'StarRocks Writer', x: 815, y: 60, w: 155, h: 78, week: 2, until: 3, lane: 'direct', autoWeek: 7 },

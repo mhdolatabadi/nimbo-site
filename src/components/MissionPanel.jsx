@@ -1,20 +1,20 @@
-import { ROADMAP_TEXT, TRACKS, weekChallenges } from '../content/bootcamp';
+import { PHASES, ROADMAP_TEXT, weekChallenges } from '../content/bootcamp';
 import { toolLogo } from '../content/toolLogos';
 import ArchitectureMap from './ArchitectureMap';
 import ChallengeVault from './ChallengeVault';
-import { ToolLogo } from './icons';
+import { FlagIcon, ToolLogo } from './icons';
 import { PANEL_ID } from './RoadmapNode';
 
 const TITLE_ID = 'roadmap-panel-title';
 
 export default function MissionPanel({ week, panelRef, onClose }) {
   const t = ROADMAP_TEXT.panel;
-  const track = TRACKS[week.track];
+  const phase = PHASES[week.phase];
 
   return (
     <section
       id={PANEL_ID}
-      className={`rp-panel track-${week.track}`}
+      className={`rp-panel phase-${week.phase}`}
       ref={panelRef}
       tabIndex={-1}
       aria-labelledby={TITLE_ID}
@@ -27,7 +27,7 @@ export default function MissionPanel({ week, panelRef, onClose }) {
         <div className="rp-panel-titles">
           <span className="rp-panel-code mono">
             {week.code}
-            {track && <> · {track.label}</>}
+            {phase && <> · {phase.label}</>}
           </span>
           <h3 className="rp-panel-title" id={TITLE_ID}>
             {week.title}
@@ -52,7 +52,20 @@ export default function MissionPanel({ week, panelRef, onClose }) {
       {week.mission && (
         <div className="rp-block">
           <h4 className="rp-block-title">{t.mission}</h4>
-          <p>{week.mission}</p>
+          {week.mission.split('\n').map((para) => (
+            <p key={para}>{para}</p>
+          ))}
+        </div>
+      )}
+
+      {week.milestone && (
+        <div className="rp-milestone">
+          <span className="rp-milestone-kicker">
+            <FlagIcon size={13} />
+            {t.milestone}
+          </span>
+          <strong>{week.milestone.title}</strong>
+          {week.milestone.body && <p>{week.milestone.body}</p>}
         </div>
       )}
 
