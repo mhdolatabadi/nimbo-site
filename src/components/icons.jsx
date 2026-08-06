@@ -34,6 +34,14 @@ export function FlagIcon({ size = 16 }) {
   );
 }
 
+export function BoltIcon({ size = 16 }) {
+  return (
+    <svg className="ico" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M13.4 2.6L5.6 13.2h5.6l-.9 8.2 7.9-10.8h-5.7z" />
+    </svg>
+  );
+}
+
 export function ToolLogo({ logo, size = 14 }) {
   if (!logo) return null;
   return (

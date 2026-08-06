@@ -1,6 +1,6 @@
 import { faDigits } from '../lib/time';
 import { ROADMAP_TEXT, isReadable } from '../content/bootcamp';
-import { CheckIcon, FlagIcon, LockIcon, SparkIcon } from './icons';
+import { BoltIcon, CheckIcon, FlagIcon, LockIcon, SparkIcon } from './icons';
 
 export const PANEL_ID = 'roadmap-panel';
 
@@ -36,6 +36,12 @@ export default function RoadmapNode({ week, selected, challenge, connector, onSe
           aria-hidden="true"
           style={{ '--seg-from': `var(--phase-${connector.from})`, '--seg-to': `var(--phase-${connector.to})` }}
         />
+      )}
+      {week.interlude && connector && (
+        <span className="rp-interlude" title={week.interlude.label}>
+          <BoltIcon size={12} />
+          <span className="rp-sr">{week.interlude.label}</span>
+        </span>
       )}
       <button
         type="button"

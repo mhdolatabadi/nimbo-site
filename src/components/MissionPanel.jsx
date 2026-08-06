@@ -2,7 +2,7 @@ import { PHASES, ROADMAP_TEXT, weekChallenges } from '../content/bootcamp';
 import { toolLogo } from '../content/toolLogos';
 import ArchitectureMap from './ArchitectureMap';
 import ChallengeVault from './ChallengeVault';
-import { FlagIcon, ToolLogo } from './icons';
+import { BoltIcon, FlagIcon, ToolLogo } from './icons';
 import { PANEL_ID } from './RoadmapNode';
 
 const TITLE_ID = 'roadmap-panel-title';
@@ -55,6 +55,18 @@ export default function MissionPanel({ week, panelRef, onClose }) {
           {week.mission.split('\n').map((para) => (
             <p key={para}>{para}</p>
           ))}
+        </div>
+      )}
+
+      {week.interlude && (
+        <div className="rp-incident">
+          <span className="rp-incident-sweep" aria-hidden="true" />
+          <span className="rp-incident-kicker">
+            <BoltIcon size={13} />
+            {week.interlude.label}
+          </span>
+          <strong>{week.interlude.title}</strong>
+          <p>{week.interlude.body}</p>
         </div>
       )}
 
